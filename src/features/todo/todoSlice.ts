@@ -1,10 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit";
 import { Todo } from "../../models/Todo";
 import {RootState} from "../../app/store";
-// import { v4 as uuidv4 } from "uuid";
-
-let cnt = 0;
-const uuidv4 = () => '#' + (++cnt);
 
 const initialState = [] as Todo[];
 
@@ -18,7 +14,7 @@ const todoSlice = createSlice({
             },
             prepare: (description: string) => ({
                 payload: {
-                    id: uuidv4(),
+                    id: nanoid(),
                     description,
                     completed: false,
                 } as Todo,
