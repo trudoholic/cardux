@@ -1,21 +1,23 @@
 import React from 'react';
-import Todos from './features/todo/Todo';
-// import AltCard from './AltCard';
-// import BasicCard from './BasicCard';
-import { Counter } from './features/counter/Counter';
 import './App.css';
 // import Button from '@mui/material/Button';
+// import AltCard from './AltCard';
+// import BasicCard from './BasicCard';
+// import { Counter } from './features/counter/Counter';
+// import Todos from './features/todo/Todo';
+import GameTable from "./features/gametable/GameTable";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Todos />
+        <GameTable />
+        {/*<Todos />*/}
         {/*<AltCard />*/}
         {/*<BasicCard />*/}
         {/*<Button variant="contained">Hello World</Button>*/}
         {/*<Button color="primary">Hello World</Button>*/}
-        <Counter />
+        {/*<Counter />*/}
       </header>
     </div>
   );
