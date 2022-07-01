@@ -1,7 +1,16 @@
 import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
-const initialState = { foo: 0, bar: 1 }
+const initialState = {
+    foo: 0,
+    bar: 1,
+    pp: [
+        { id: 'N0' },
+        { id: 'E1' },
+        { id: 'S2' },
+        { id: 'W3' },
+    ]
+}
 
 const gameTableSlice = createSlice({
     name: "gameTable",
@@ -15,5 +24,5 @@ const gameTableSlice = createSlice({
 })
 
 export const { log } = gameTableSlice.actions
-// export const gameTableStatus = (state: RootState) => state.gameTable
+export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer

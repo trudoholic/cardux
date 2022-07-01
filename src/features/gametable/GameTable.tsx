@@ -5,8 +5,16 @@ import Button from "@mui/material/Button"
 import Container from "@mui/material/Container"
 import Typography from "@mui/material/Typography"
 
-import { log } from "./gameTableSlice"
+import { gameState, log } from "./gameTableSlice"
 import React from "react";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import IconButton from "@mui/material/IconButton";
+import {removeTodo, setTodoStatus} from "../todo/todoSlice";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Checkbox from "@mui/material/Checkbox";
+
 
 const useStyles = makeStyles({
     root: {
@@ -27,11 +35,21 @@ const useStyles = makeStyles({
     main: {
         display: "flex",
         flexGrow: 1,
-        justifyContent: "center",
+        // justifyContent: "center",
+        // gap: "16px",
+        // backgroundColor: "#ffc",
+    },
+    game: {
+        display: "flex",
+        flexGrow: 4,
         gap: "16px",
-        backgroundColor: "#ffc",
+        backgroundColor: "#fff",
     },
     aside: {
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: 1,
+        backgroundColor: "#999",
     },
     footer: {
         display: "flex",
@@ -41,6 +59,14 @@ const useStyles = makeStyles({
         backgroundColor: "#ccc",
         padding: "16px",
     },
+    player: {
+        display: "flex",
+        flexGrow: 1,
+        justifyContent: "center",
+        gap: "16px",
+        backgroundColor: "#ffc",
+        border: "1px solid green",
+    },
 })
 
 function GameTable() {
@@ -48,7 +74,7 @@ function GameTable() {
     const classes = useStyles()
 
     //React Redux Hooks
-    // const todoList = useAppSelector(todoListStatus);
+    const state = useAppSelector(gameState);
     const dispatch = useAppDispatch();
 
     return (
@@ -76,14 +102,22 @@ function GameTable() {
                 </Button>
             </div>
             <div className={classes.main}>
-                <Typography>main0</Typography>
-                <Typography>main1</Typography>
-                <Typography>main2</Typography>
+                <div className={classes.game}>
+                    {state.pp.map(p => (
+                        <div className={classes.player}>
+                            <h1 key={p.id}>{p.id}</h1>
+                        </div>
+                    ))}
+                </div>
+                <div className={classes.aside}>
+                    <Typography>aside0</Typography>
+                    <Typography>aside1</Typography>
+                    <Typography>aside2</Typography>
+                </div>
             </div>
             <div className={classes.footer}>
-                <Typography>footer0</Typography>
-                <Typography>footer1</Typography>
-                <Typography>footer2</Typography>
+                <Typography>Lorem</Typography>
+                <Typography>ipsum</Typography>
             </div>
         </div>
 
