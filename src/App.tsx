@@ -10,15 +10,17 @@ import GameTable from "./features/gametable/GameTable";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <GameTable />
+      <GameTable />
+      {/*<header className="App-header">*/}
+        {/*<GameTable />*/}
         {/*<Todos />*/}
         {/*<AltCard />*/}
         {/*<BasicCard />*/}
         {/*<Button variant="contained">Hello World</Button>*/}
         {/*<Button color="primary">Hello World</Button>*/}
         {/*<Counter />*/}
-      </header>
+      {/*</header>*/}
+
     </div>
   );
 }
