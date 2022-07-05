@@ -1,15 +1,13 @@
 import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
+import { getPlayers } from "./Players"
+
+const names = ['North','East','South','West']
 const initialState = {
     foo: 0,
     bar: 1,
-    pp: [
-        { id: 'N0' },
-        { id: 'E1' },
-        { id: 'S2' },
-        { id: 'W3' },
-    ]
+    pp: getPlayers(names)
 }
 
 const gameTableSlice = createSlice({

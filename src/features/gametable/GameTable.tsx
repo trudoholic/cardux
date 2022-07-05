@@ -61,11 +61,20 @@ const useStyles = makeStyles({
     },
     player: {
         display: "flex",
+        flexDirection: "column",
         flexGrow: 1,
-        justifyContent: "center",
         gap: "16px",
         backgroundColor: "#ffc",
         border: "1px solid green",
+    },
+    zone: {
+        // display: "flex",
+        // flexDirection: "column",
+        // flexGrow: 1,
+        // gap: "16px",
+        // backgroundColor: "#ffc",
+        margin: "16px",
+        border: "1px solid blue",
     },
 })
 
@@ -104,15 +113,22 @@ function GameTable() {
             <div className={classes.main}>
                 <div className={classes.game}>
                     {state.pp.map(p => (
-                        <div className={classes.player}>
-                            <h1 key={p.id}>{p.id}</h1>
+                        <div key={p.id} className={classes.player}>
+                            <h1>{p.id}</h1>
+                            <div>
+                                {p.zones.map(z => (
+                                    <div key={z.id} className={classes.zone}>
+                                        <p>{z.id}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>
                 <div className={classes.aside}>
-                    <Typography>aside0</Typography>
-                    <Typography>aside1</Typography>
-                    <Typography>aside2</Typography>
+                    <Typography>spam</Typography>
+                    <Typography>ham</Typography>
+                    <Typography>eggs</Typography>
                 </div>
             </div>
             <div className={classes.footer}>
