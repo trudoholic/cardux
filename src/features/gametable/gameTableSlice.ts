@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
-import { getPlayers } from "./Players"
+import { getCard, getPlayers } from "./Players"
 
 const names = ['North','East','South','West']
 const initialState = {
@@ -18,9 +18,15 @@ const gameTableSlice = createSlice({
             const id = action.payload as keyof typeof state
             console.log("%c [>]", 'color: #ff00ff', id, state[id])
         },
+        add(state, action: PayloadAction<string>) {
+            const id = action.payload
+            const cards = state.pp[0].zones[0].cards
+            cards.push(getCard(id))
+            console.log("%c [+]", 'color: #ff00ff', id, cards.length)
+        },
     },
 })
 
-export const { log } = gameTableSlice.actions
+export const { add, log } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer

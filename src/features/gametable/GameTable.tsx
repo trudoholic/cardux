@@ -2,19 +2,10 @@ import {useAppSelector, useAppDispatch} from "../../app/hooks";
 import { makeStyles  } from "@mui/styles"
 
 import Button from "@mui/material/Button"
-import Container from "@mui/material/Container"
 import Typography from "@mui/material/Typography"
 
-import { gameState, log } from "./gameTableSlice"
+import { gameState, add, log } from "./gameTableSlice"
 import React from "react";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
-import IconButton from "@mui/material/IconButton";
-import {removeTodo, setTodoStatus} from "../todo/todoSlice";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Checkbox from "@mui/material/Checkbox";
-
 
 const useStyles = makeStyles({
     root: {
@@ -78,6 +69,8 @@ const useStyles = makeStyles({
     },
 })
 
+let cnt = 0
+
 function GameTable() {
 
     const classes = useStyles()
@@ -94,10 +87,10 @@ function GameTable() {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                        dispatch(log('foo'))
+                        dispatch(add(++cnt + ''))
                     }}
                 >
-                    Foo
+                    Add
                 </Button>
 
                 <Button
@@ -121,7 +114,14 @@ function GameTable() {
                                         {/*<p>{z.id}</p>*/}
                                         <details>
                                             <summary>{z.id}</summary>
-                                            <p>Something small enough to escape casual notice</p>
+                                            {/*<p>Something small enough to escape casual notice</p>*/}
+
+                                            {z.cards.map(card => (
+                                                <div key={card.id}>
+                                                    <p>{card.id}</p>
+                                                </div>
+                                            ))}
+
                                         </details>
                                     </div>
                                 ))}

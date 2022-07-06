@@ -15,10 +15,10 @@ export interface IPlayer {
     zones: IZone[]
 }
 
-function getCard(id: string): ICard {
+export function getCard(id: string): ICard {
     return {
         id,
-        description: 'Card ' + id,
+        description: 'Card: ' + id,
         flag: false,
     }
 }
