@@ -48,7 +48,7 @@ const useStyles = makeStyles({
     aside: {
         display: "flex",
         flexDirection: "column",
-        flexGrow: 1,
+        flex: "0 0 320px",
         backgroundColor: "#999",
     },
     footer: {
@@ -118,7 +118,11 @@ function GameTable() {
                             <div>
                                 {p.zones.map(z => (
                                     <div key={z.id} className={classes.zone}>
-                                        <p>{z.id}</p>
+                                        {/*<p>{z.id}</p>*/}
+                                        <details>
+                                            <summary>{z.id}</summary>
+                                            <p>Something small enough to escape casual notice</p>
+                                        </details>
                                     </div>
                                 ))}
                             </div>
