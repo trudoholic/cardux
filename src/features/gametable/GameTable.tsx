@@ -4,7 +4,7 @@ import { makeStyles  } from "@mui/styles"
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 
-import { gameState, add, log } from "./gameTableSlice"
+import { gameState, add, remove, log } from "./gameTableSlice"
 import React from "react";
 
 const useStyles = makeStyles({
@@ -97,10 +97,10 @@ function GameTable() {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                        dispatch(log('bar'))
+                        dispatch(remove(''))
                     }}
                 >
-                    Bar
+                    REM
                 </Button>
             </div>
             <div className={classes.main}>

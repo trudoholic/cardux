@@ -24,9 +24,16 @@ const gameTableSlice = createSlice({
             cards.push(getCard(id))
             console.log("%c [+]", 'color: #ff00ff', id, cards.length)
         },
+        remove(state, action: PayloadAction<string>) {
+            const cards = state.pp[0].zones[0].cards
+            if (cards.length) {
+                const card = cards.pop() as {id: string}
+                console.log("%c [-]", 'color: #ff00ff', card.id, cards.length)
+            }
+        },
     },
 })
 
-export const { add, log } = gameTableSlice.actions
+export const { add, remove, log } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer
