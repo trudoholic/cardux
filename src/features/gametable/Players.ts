@@ -1,13 +1,14 @@
 
-export interface IState {
-    sel_card: ICard | null
-    pp: IPlayer[]
-}
-
 export interface ICard {
     id: string
     description: string
     flag: boolean
+}
+
+export interface IState {
+    cards: Record<string, ICard>
+    sel_card: ICard | null
+    pp: IPlayer[]
 }
 
 export interface IZone {

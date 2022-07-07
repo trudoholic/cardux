@@ -41,6 +41,7 @@ const useStyles = makeStyles({
         flexDirection: "column",
         flex: "0 0 320px",
         backgroundColor: "#999",
+        padding: "16px",
     },
     footer: {
         display: "flex",
@@ -136,9 +137,22 @@ function GameTable() {
                     ))}
                 </div>
                 <div className={classes.aside}>
-                    <Typography>spam</Typography>
-                    <Typography>ham</Typography>
-                    <Typography>eggs</Typography>
+                    {state.sel_card ? <div>
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                onClick={() => {
+                                    dispatch(log(state.sel_card?.id ?? ''))
+                                }}
+                            >
+                                {state.sel_card.id}
+                            </Button>
+                        </div> : <div>
+                            <Typography>spam</Typography>
+                            <Typography>ham</Typography>
+                            <Typography>eggs</Typography>
+                        </div>
+                    }
                 </div>
             </div>
             <div className={classes.footer}>
