@@ -91,7 +91,7 @@ function GameTable() {
                         dispatch(add(++cnt + ''))
                     }}
                 >
-                    Add
+                    ADD
                 </Button>
 
                 <Button
@@ -106,7 +106,7 @@ function GameTable() {
             </div>
             <div className={classes.main}>
                 <div className={classes.game}>
-                    {state.pp.map(p => (
+                    {state.pp.map((p, pi) => (
                         <div key={p.id} className={classes.player}>
                             <h1>{p.id}</h1>
                             <div>
@@ -156,8 +156,35 @@ function GameTable() {
                 </div>
             </div>
             <div className={classes.footer}>
-                <Typography>Lorem</Typography>
-                <Typography>ipsum</Typography>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                        dispatch(log('NEW'))
+                    }}
+                >
+                    NEW
+                </Button>
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                        dispatch(log('NEXT'))
+                    }}
+                >
+                    NEXT
+                </Button>
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                        dispatch(log('END'))
+                    }}
+                >
+                    END
+                </Button>
             </div>
         </div>
 

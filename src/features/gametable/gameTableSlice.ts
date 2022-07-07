@@ -7,6 +7,7 @@ const names = ['North','East','South','West']
 const initialState: IState = {
     cards: Object.create(null) as Record<string, ICard>,
     sel_card: null,
+    sel_p: 0,
     pp: getPlayers(names)
 }
 

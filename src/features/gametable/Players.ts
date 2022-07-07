@@ -8,6 +8,7 @@ export interface ICard {
 export interface IState {
     cards: Record<string, ICard>
     sel_card: ICard | null
+    sel_p: number
     pp: IPlayer[]
 }
 
