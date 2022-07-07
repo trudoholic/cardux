@@ -16,7 +16,7 @@ const gameTableSlice = createSlice({
     reducers: {
         log(state, action: PayloadAction<string>) {
             const id = action.payload as keyof typeof state
-            console.log("%c [>]", 'color: #ff00ff', id, state[id])
+            console.log("%c [card]", 'color: #ff00ff', id)
         },
         add(state, action: PayloadAction<string>) {
             const id = action.payload

@@ -55,7 +55,7 @@ const useStyles = makeStyles({
         flexDirection: "column",
         flexGrow: 1,
         gap: "16px",
-        backgroundColor: "#ffc",
+        backgroundColor: "#e8f5e9",
         border: "1px solid green",
     },
     zone: {
@@ -114,11 +114,17 @@ function GameTable() {
                                         {/*<p>{z.id}</p>*/}
                                         <details>
                                             <summary>{z.id}</summary>
-                                            {/*<p>Something small enough to escape casual notice</p>*/}
-
                                             {z.cards.map(card => (
                                                 <div key={card.id}>
-                                                    <p>{card.id}</p>
+                                                    <Button
+                                                        variant="outlined"
+                                                        color="primary"
+                                                        onClick={() => {
+                                                            dispatch(log(card.id))
+                                                        }}
+                                                    >
+                                                        {card.id}
+                                                    </Button>
                                                 </div>
                                             ))}
 
