@@ -4,7 +4,7 @@ import { makeStyles  } from "@mui/styles"
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 
-import { gameState, add, remove, log } from "./gameTableSlice"
+import { gameState, add, remove, select, log } from "./gameTableSlice"
 import React from "react";
 
 const useStyles = makeStyles({
@@ -120,7 +120,7 @@ function GameTable() {
                                                         variant="outlined"
                                                         color="primary"
                                                         onClick={() => {
-                                                            dispatch(log(card.id))
+                                                            dispatch(select(card.id))
                                                         }}
                                                     >
                                                         {card.id}

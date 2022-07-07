@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
-import { getCard, getPlayers } from "./Players"
+import {getCard, getPlayers, IState} from "./Players"
 
 const names = ['North','East','South','West']
-const initialState = {
-    foo: 0,
-    bar: 1,
+const initialState: IState = {
+    sel_card: null,
     pp: getPlayers(names)
 }
 
@@ -31,9 +30,13 @@ const gameTableSlice = createSlice({
                 console.log("%c [-]", 'color: #ff00ff', card.id, cards.length)
             }
         },
+        select(state, action: PayloadAction<string>) {
+            const id = action.payload as keyof typeof state
+            console.log("%c [card]", 'color: #ff00ff', id)
+        },
     },
 })
 
-export const { add, remove, log } = gameTableSlice.actions
+export const { add, remove, select, log } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer

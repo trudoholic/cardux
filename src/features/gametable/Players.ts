@@ -1,4 +1,9 @@
 
+export interface IState {
+    sel_card: ICard | null
+    pp: IPlayer[]
+}
+
 export interface ICard {
     id: string
     description: string
