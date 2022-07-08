@@ -7,7 +7,8 @@ const names = ['North','East','South','West']
 const initialState: IState = {
     cards: Object.create(null) as Record<string, ICard>,
     sel_card: null,
-    sel_p: 0,
+    sel_gt: 0,
+    sel_pt: 0,
     pp: getPlayers(names)
 }
 
@@ -21,7 +22,7 @@ const gameTableSlice = createSlice({
         },
         add(state, action: PayloadAction<string>) {
             const id = action.payload
-            const cards = state.pp[state.sel_p].zones[0].cards
+            const cards = state.pp[state.sel_pt].zones[0].cards
             const card = getCard(id)
             cards.push(card)
             state.cards[id] = card
@@ -29,7 +30,7 @@ const gameTableSlice = createSlice({
             console.log("%c [+]", 'color: #ff00ff', id, cards.length)
         },
         remove(state, action: PayloadAction<string>) {
-            const cards = state.pp[state.sel_p].zones[0].cards
+            const cards = state.pp[state.sel_pt].zones[0].cards
             if (cards.length) {
                 const card = cards.pop() as {id: string}
                 state.sel_card = cards[cards.length - 1]
@@ -45,8 +46,25 @@ const gameTableSlice = createSlice({
             state.sel_card = state.cards[id] ?? null
         },
         next(state) {
-            const N = 4
-            state.sel_p = (state.sel_p + 1) % N
+            const N = 4, move_token = false
+            let lim = move_token ? state.sel_gt : 0
+
+            let pt = (state.sel_pt + 1) % N
+            console.log("%c [pt]", 'color: #00ffff', state.sel_pt, '->', pt)
+            if (pt === lim) {
+                console.log("%c [pt round]", 'color: #ff00ff')
+
+                let gt = state.sel_gt + 1
+                console.log("%c [--gt--]", 'color: #ff00ff', state.sel_gt, '=>', gt)
+                if (N === gt) {
+                    console.log("%c [--gt round--]", 'color: #ff00ff')
+                    gt = 0
+                }
+                state.sel_gt = gt
+
+                pt = move_token ? gt : 0
+            }
+            state.sel_pt = pt
         },
     },
 })

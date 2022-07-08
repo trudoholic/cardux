@@ -3,6 +3,7 @@ import { makeStyles  } from "@mui/styles"
 
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
+import LocalPoliceIcon from '@mui/icons-material/LocalPolice'
 
 import { gameState, add, log, next, remove, select } from "./gameTableSlice"
 import React from "react";
@@ -55,6 +56,8 @@ const useStyles = makeStyles({
         display: "flex",
         flexDirection: "column",
         flexGrow: 1,
+        // alignContent: "center",
+        // alignItems: "center",
         gap: "16px",
         backgroundColor: "#e8f5e9",
         border: "1px solid green",
@@ -110,7 +113,8 @@ function GameTable() {
                         <div key={p.id} className={classes.player}>
                             <Button
                                 variant="contained"
-                                color ={state.sel_p === pi ? "success" : "primary"}
+                                color ={state.sel_pt === pi ? "success" : "primary"}
+                                startIcon={state.sel_gt === pi && <LocalPoliceIcon />}
                                 onClick={() => {
                                     dispatch(log(p.id))
                                 }}
