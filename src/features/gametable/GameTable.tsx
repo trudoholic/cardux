@@ -4,7 +4,7 @@ import { makeStyles  } from "@mui/styles"
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 
-import { gameState, add, remove, select, log } from "./gameTableSlice"
+import { gameState, add, log, next, remove, select } from "./gameTableSlice"
 import React from "react";
 
 const useStyles = makeStyles({
@@ -108,11 +108,18 @@ function GameTable() {
                 <div className={classes.game}>
                     {state.pp.map((p, pi) => (
                         <div key={p.id} className={classes.player}>
-                            <h1>{p.id}</h1>
+                            <Button
+                                variant="contained"
+                                color ={state.sel_p === pi ? "success" : "primary"}
+                                onClick={() => {
+                                    dispatch(log(p.id))
+                                }}
+                            >
+                                {p.id}
+                            </Button>
                             <div>
                                 {p.zones.map(z => (
                                     <div key={z.id} className={classes.zone}>
-                                        {/*<p>{z.id}</p>*/}
                                         <details>
                                             <summary>{z.id}</summary>
                                             {z.cards.map(card => (
@@ -168,9 +175,9 @@ function GameTable() {
 
                 <Button
                     variant="contained"
-                    color="primary"
+                    color="success"
                     onClick={() => {
-                        dispatch(log('NEXT'))
+                        dispatch(next())
                     }}
                 >
                     NEXT

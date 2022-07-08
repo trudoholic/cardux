@@ -16,12 +16,12 @@ const gameTableSlice = createSlice({
     initialState,
     reducers: {
         log(state, action: PayloadAction<string>) {
-            const id = action.payload as keyof typeof state
-            console.log("%c [card]", 'color: #ff00ff', id)
+            const id = action.payload //as keyof typeof state
+            console.log("%c [>]", 'color: #ff00ff', id)
         },
         add(state, action: PayloadAction<string>) {
             const id = action.payload
-            const cards = state.pp[0].zones[0].cards
+            const cards = state.pp[state.sel_p].zones[0].cards
             const card = getCard(id)
             cards.push(card)
             state.cards[id] = card
@@ -29,7 +29,7 @@ const gameTableSlice = createSlice({
             console.log("%c [+]", 'color: #ff00ff', id, cards.length)
         },
         remove(state, action: PayloadAction<string>) {
-            const cards = state.pp[0].zones[0].cards
+            const cards = state.pp[state.sel_p].zones[0].cards
             if (cards.length) {
                 const card = cards.pop() as {id: string}
                 state.sel_card = cards[cards.length - 1]
@@ -40,13 +40,17 @@ const gameTableSlice = createSlice({
             }
         },
         select(state, action: PayloadAction<string>) {
-            const id = action.payload as keyof typeof state
+            const id = action.payload
             console.log("%c [card]", 'color: #ff00ff', id)
             state.sel_card = state.cards[id] ?? null
+        },
+        next(state) {
+            const N = 4
+            state.sel_p = (state.sel_p + 1) % N
         },
     },
 })
 
-export const { add, remove, select, log } = gameTableSlice.actions
+export const { add, log, next, remove, select } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer
