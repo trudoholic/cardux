@@ -72,7 +72,7 @@ const gameTableSlice = createSlice({
             let lim = move_token ? state.sel_gt : 0
 
             let pt = (state.sel_pt + 1) % N
-            console.log("%c [pt]", 'color: #268bd2', state.sel_pt, '->', pt)
+            console.log("%c [pt]", 'color: #dc322f', state.sel_pt, '->', pt)
             if (pt === lim) {
                 const new_gt = end_game_turn(state.sel_gt)
                 state.sel_gt = new_gt

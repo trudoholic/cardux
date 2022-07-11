@@ -17,8 +17,8 @@ function GameTable() {
     const dispatch = useAppDispatch();
 
     // Hook
-    function usePrevious(value: number) {
-        const ref = useRef<number>()
+    function usePrevious<T>(value: T) {
+        const ref = useRef<T>()
         useEffect(() => {
             ref.current = value
         }, [value])
@@ -27,7 +27,10 @@ function GameTable() {
 
     //React Hooks
     const prev_sel_pt = usePrevious(state.sel_pt)
-    useEffect(() => console.log('*****', prev_sel_pt, '--->', state.sel_pt), [state.sel_pt])
+    useEffect(() => {
+        // dispatch(log(`!!! ${prev_sel_pt} ---> ${state.sel_pt} !!!`))
+        console.log("%c [pt]", 'color: #268bd2', prev_sel_pt, '->', state.sel_pt)
+    }, [state.sel_pt])
 
     const classes = gameStyles()
 
