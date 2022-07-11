@@ -1,87 +1,21 @@
 import {useAppSelector, useAppDispatch} from "../../app/hooks";
-import { makeStyles  } from "@mui/styles"
 
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice'
 
 import { gameState, add, log, next, remove, select } from "./gameTableSlice"
-import React from "react";
-
-const useStyles = makeStyles({
-    root: {
-        display: "flex",
-        flexDirection: "column",
-        alignContent: "flex-start",
-        minHeight: "100vh",
-        backgroundColor: "#369",
-    },
-    header: {
-        display: "flex",
-        flexShrink: 0,
-        justifyContent: "center",
-        gap: "16px",
-        backgroundColor: "#ccc",
-        padding: "16px",
-    },
-    main: {
-        display: "flex",
-        flexGrow: 1,
-        // justifyContent: "center",
-        // gap: "16px",
-        // backgroundColor: "#ffc",
-    },
-    game: {
-        display: "flex",
-        flexGrow: 4,
-        gap: "16px",
-        backgroundColor: "#fff",
-    },
-    aside: {
-        display: "flex",
-        flexDirection: "column",
-        flex: "0 0 320px",
-        backgroundColor: "#999",
-        padding: "16px",
-    },
-    footer: {
-        display: "flex",
-        flexShrink: 0,
-        justifyContent: "center",
-        gap: "16px",
-        backgroundColor: "#ccc",
-        padding: "16px",
-    },
-    player: {
-        display: "flex",
-        flexDirection: "column",
-        flexGrow: 1,
-        // alignContent: "center",
-        // alignItems: "center",
-        gap: "16px",
-        backgroundColor: "#e8f5e9",
-        border: "1px solid green",
-    },
-    zone: {
-        // display: "flex",
-        // flexDirection: "column",
-        // flexGrow: 1,
-        // gap: "16px",
-        // backgroundColor: "#ffc",
-        margin: "16px",
-        border: "1px solid blue",
-    },
-})
+import { gameStyles  } from "./gameStyles"
 
 let cnt = 0
 
 function GameTable() {
 
-    const classes = useStyles()
-
     //React Redux Hooks
     const state = useAppSelector(gameState);
     const dispatch = useAppDispatch();
+
+    const classes = gameStyles()
 
     return (
 
@@ -124,7 +58,7 @@ function GameTable() {
                             <div>
                                 {p.zones.map(z => (
                                     <div key={z.id} className={classes.zone}>
-                                        <details>
+                                        <details open>
                                             <summary>{z.id}</summary>
                                             {z.cards.map(card => (
                                                 <div key={card.id}>
