@@ -12,6 +12,20 @@ const initialState: IState = {
     pp: getPlayers(names)
 }
 
+const begin_game_turn = (gt: number) => {
+    console.log("%c [--begin game turn--]", 'color: #ff00ff', gt)
+}
+const end_game_turn = (gt: number) => {
+    console.log("%c [--end game turn--]", 'color: #ff00ff', gt)
+    const N = 4
+    let new_gt = gt + 1
+    if (N === new_gt) {
+        console.log("%c [==gt round==]", 'color: #ff00ff')
+        new_gt = 0
+    }
+    return new_gt
+}
+
 const gameTableSlice = createSlice({
     name: "gameTable",
     initialState,
@@ -46,23 +60,18 @@ const gameTableSlice = createSlice({
             state.sel_card = state.cards[id] ?? null
         },
         next(state) {
-            const N = 4, move_token = false
+            // log(state, 'test')
+            const N = 4, move_token = true
             let lim = move_token ? state.sel_gt : 0
 
             let pt = (state.sel_pt + 1) % N
             console.log("%c [pt]", 'color: #00ffff', state.sel_pt, '->', pt)
             if (pt === lim) {
-                console.log("%c [pt round]", 'color: #ff00ff')
+                const new_gt = end_game_turn(state.sel_gt)
+                state.sel_gt = new_gt
+                begin_game_turn(new_gt)
 
-                let gt = state.sel_gt + 1
-                console.log("%c [--gt--]", 'color: #ff00ff', state.sel_gt, '=>', gt)
-                if (N === gt) {
-                    console.log("%c [--gt round--]", 'color: #ff00ff')
-                    gt = 0
-                }
-                state.sel_gt = gt
-
-                pt = move_token ? gt : 0
+                pt = move_token ? new_gt : 0
             }
             state.sel_pt = pt
         },
