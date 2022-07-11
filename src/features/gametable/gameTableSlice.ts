@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
+import {log_m, bra_gt, ket_gt} from "./Logger"
 import {getCard, getPlayers, ICard, IState} from "./Players"
 
 const names = ['North','East','South','West']
@@ -8,19 +9,19 @@ const initialState: IState = {
     cards: Object.create(null) as Record<string, ICard>,
     sel_card: null,
     sel_gt: 0,
+    rnd_gt: 0,
     sel_pt: 0,
     pp: getPlayers(names)
 }
 
 const begin_game_turn = (gt: number) => {
-    console.log("%c [--begin game turn--]", 'color: #ff00ff', gt)
+    bra_gt(gt)
 }
 const end_game_turn = (gt: number) => {
-    console.log("%c [--end game turn--]", 'color: #ff00ff', gt)
+    ket_gt(gt)
     const N = 4
     let new_gt = gt + 1
     if (N === new_gt) {
-        console.log("%c [==gt round==]", 'color: #ff00ff')
         new_gt = 0
     }
     return new_gt
@@ -32,7 +33,7 @@ const gameTableSlice = createSlice({
     reducers: {
         log(state, action: PayloadAction<string>) {
             const id = action.payload //as keyof typeof state
-            console.log("%c [>]", 'color: #ff00ff', id)
+            log_m(id)
         },
         add(state, action: PayloadAction<string>) {
             const id = action.payload
@@ -59,16 +60,26 @@ const gameTableSlice = createSlice({
             console.log("%c [card]", 'color: #ff00ff', id)
             state.sel_card = state.cards[id] ?? null
         },
+        begin(state) {
+            state.sel_gt = 0
+            state.rnd_gt = 0
+            console.log("%c [gt round]", 'color: #859900', state.rnd_gt)
+            begin_game_turn(0)
+        },
         next(state) {
             // log(state, 'test')
             const N = 4, move_token = true
             let lim = move_token ? state.sel_gt : 0
 
             let pt = (state.sel_pt + 1) % N
-            console.log("%c [pt]", 'color: #00ffff', state.sel_pt, '->', pt)
+            console.log("%c [pt]", 'color: #268bd2', state.sel_pt, '->', pt)
             if (pt === lim) {
                 const new_gt = end_game_turn(state.sel_gt)
                 state.sel_gt = new_gt
+                if (! new_gt) {
+                    state.rnd_gt += 1
+                    console.log("%c [gt round]", 'color: #859900', state.rnd_gt)
+                }
                 begin_game_turn(new_gt)
 
                 pt = move_token ? new_gt : 0
@@ -78,6 +89,6 @@ const gameTableSlice = createSlice({
     },
 })
 
-export const { add, log, next, remove, select } = gameTableSlice.actions
+export const { add, begin, log, next, remove, select } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer

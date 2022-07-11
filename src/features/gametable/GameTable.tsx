@@ -4,7 +4,7 @@ import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice'
 
-import { gameState, add, log, next, remove, select } from "./gameTableSlice"
+import { gameState, add, begin, log, next, remove, select } from "./gameTableSlice"
 import { gameStyles  } from "./gameStyles"
 
 let cnt = 0
@@ -105,7 +105,7 @@ function GameTable() {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                        dispatch(log('NEW'))
+                        dispatch(begin())
                     }}
                 >
                     NEW
