@@ -1,3 +1,4 @@
+import React, {useEffect, useRef, useState} from 'react'
 import {useAppSelector, useAppDispatch} from "../../app/hooks";
 
 import Button from "@mui/material/Button"
@@ -14,6 +15,19 @@ function GameTable() {
     //React Redux Hooks
     const state = useAppSelector(gameState);
     const dispatch = useAppDispatch();
+
+    // Hook
+    function usePrevious(value: number) {
+        const ref = useRef<number>()
+        useEffect(() => {
+            ref.current = value
+        }, [value])
+        return ref.current
+    }
+
+    //React Hooks
+    const prev_sel_pt = usePrevious(state.sel_pt)
+    useEffect(() => console.log('*****', prev_sel_pt, '--->', state.sel_pt), [state.sel_pt])
 
     const classes = gameStyles()
 
