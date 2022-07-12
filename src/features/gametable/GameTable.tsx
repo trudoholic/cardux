@@ -5,7 +5,7 @@ import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice'
 
-import { gameState, add, begin, log, next, remove, select } from "./gameTableSlice"
+import { gameState, add, begin, change_pt, log, next, remove, select } from "./gameTableSlice"
 import { gameStyles  } from "./gameStyles"
 
 let cnt = 0
@@ -26,11 +26,11 @@ function GameTable() {
     }
 
     //React Hooks
-    const prev_sel_pt = usePrevious(state.sel_pt)
+    const prev_sel_pt = usePrevious(state.cur_pt)
     useEffect(() => {
-        // dispatch(log(`!!! ${prev_sel_pt} ---> ${state.sel_pt} !!!`))
-        console.log("%c [pt]", 'color: #268bd2', prev_sel_pt, '->', state.sel_pt)
-    }, [state.sel_pt])
+        console.log("%c [pt]", 'color: #268bd2', prev_sel_pt, '->', state.cur_pt)
+        dispatch(change_pt([prev_sel_pt ?? -1, state.cur_pt]))
+    }, [state.cur_pt])
 
     const classes = gameStyles()
 
@@ -64,8 +64,8 @@ function GameTable() {
                         <div key={p.id} className={classes.player}>
                             <Button
                                 variant="contained"
-                                color ={state.sel_pt === pi ? "success" : "primary"}
-                                startIcon={state.sel_gt === pi && <LocalPoliceIcon />}
+                                color ={state.cur_pt === pi ? "success" : "primary"}
+                                startIcon={state.cur_gt === pi && <LocalPoliceIcon />}
                                 onClick={() => {
                                     dispatch(log(p.id))
                                 }}

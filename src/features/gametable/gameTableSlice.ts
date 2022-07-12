@@ -8,9 +8,9 @@ const names = ['North','East','South','West']
 const initialState: IState = {
     cards: Object.create(null) as Record<string, ICard>,
     sel_card: null,
-    sel_gt: 0,
+    cur_gt: 0,
     rnd_gt: 0,
-    sel_pt: 0,
+    cur_pt: 0,
     pp: getPlayers(names)
 }
 
@@ -37,7 +37,7 @@ const gameTableSlice = createSlice({
         },
         add(state, action: PayloadAction<string>) {
             const id = action.payload
-            const cards = state.pp[state.sel_pt].zones[0].cards
+            const cards = state.pp[state.cur_pt].zones[0].cards
             const card = getCard(id)
             cards.push(card)
             state.cards[id] = card
@@ -45,7 +45,7 @@ const gameTableSlice = createSlice({
             console.log("%c [+]", 'color: #ff00ff', id, cards.length)
         },
         remove(state, action: PayloadAction<string>) {
-            const cards = state.pp[state.sel_pt].zones[0].cards
+            const cards = state.pp[state.cur_pt].zones[0].cards
             if (cards.length) {
                 const card = cards.pop() as {id: string}
                 state.sel_card = cards[cards.length - 1]
@@ -61,7 +61,7 @@ const gameTableSlice = createSlice({
             state.sel_card = state.cards[id] ?? null
         },
         begin(state) {
-            state.sel_gt = 0
+            state.cur_gt = 0
             state.rnd_gt = 0
             console.log("%c [gt round]", 'color: #859900', state.rnd_gt)
             begin_game_turn(0)
@@ -69,13 +69,13 @@ const gameTableSlice = createSlice({
         next(state) {
             // log(state, 'test')
             const N = 4, move_token = true
-            let lim = move_token ? state.sel_gt : 0
+            let lim = move_token ? state.cur_gt : 0
 
-            let pt = (state.sel_pt + 1) % N
-            console.log("%c [pt]", 'color: #dc322f', state.sel_pt, '->', pt)
+            let pt = (state.cur_pt + 1) % N
+            console.log("%c [pt]", 'color: #dc322f', state.cur_pt, '->', pt)
             if (pt === lim) {
-                const new_gt = end_game_turn(state.sel_gt)
-                state.sel_gt = new_gt
+                const new_gt = end_game_turn(state.cur_gt)
+                state.cur_gt = new_gt
                 if (! new_gt) {
                     state.rnd_gt += 1
                     console.log("%c [gt round]", 'color: #859900', state.rnd_gt)
@@ -84,11 +84,15 @@ const gameTableSlice = createSlice({
 
                 pt = move_token ? new_gt : 0
             }
-            state.sel_pt = pt
+            state.cur_pt = pt
+        },
+        change_pt(state, action: PayloadAction<[number, number]>) {
+            const ids = action.payload
+            console.log("%c [ids]", 'color: #ff00ff', ids)
         },
     },
 })
 
-export const { add, begin, log, next, remove, select } = gameTableSlice.actions
+export const { add, begin, change_pt, log, next, remove, select } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer
