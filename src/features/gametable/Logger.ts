@@ -23,3 +23,13 @@ export function ket_gt(gt: number) {
     console.log(`%c </gt ${gt}>`, 'color:' + GREEN)
     console.groupEnd();
 }
+
+export function bra_pt(pt: number) {
+    // console.group(`%c PT: `, 'color:' + BLUE, pt)
+    console.log(`%c \t<pt ${pt}>`, 'color:' + BLUE)
+}
+
+export function ket_pt(pt: number) {
+    console.log(`%c \t</pt ${pt}>`, 'color:' + BLUE)
+    // console.groupEnd();
+}

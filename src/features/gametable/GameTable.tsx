@@ -5,7 +5,7 @@ import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice'
 
-import { gameState, add, begin, change_gt, change_pt, log, next, remove, select } from "./gameTableSlice"
+import { gameState, add, begin, change_gt, change_pt, end, log, next, remove, select } from "./gameTableSlice"
 import { gameStyles  } from "./gameStyles"
 
 let cnt = 0
@@ -29,16 +29,14 @@ function GameTable() {
     const prev_cur_pt = usePrevious(state.cur_pt)
     useEffect(() => {
         if (null != prev_cur_pt) {
-            // console.log("%c [pt]", 'color: #268bd2', prev_cur_pt, '->', state.cur_pt)
-            // dispatch(change_pt([prev_cur_pt ?? -1, state.cur_pt]))
+            dispatch(change_pt([prev_cur_pt, state.cur_pt]))
         }
     }, [state.cur_pt])
 
     const prev_cur_gt = usePrevious(state.cur_gt)
     useEffect(() => {
         if (null != prev_cur_gt) {
-            console.log("%c [==gt==]", 'color: #859900', prev_cur_gt, '->', state.cur_gt)
-            dispatch(change_gt([prev_cur_gt ?? -1, state.cur_gt]))
+            dispatch(change_gt([prev_cur_gt, state.cur_gt]))
         }
     }, [state.cur_gt])
 
@@ -152,7 +150,7 @@ function GameTable() {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                        dispatch(log('END'))
+                        dispatch(end())
                     }}
                 >
                     END
