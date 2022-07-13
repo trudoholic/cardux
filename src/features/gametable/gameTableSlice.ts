@@ -6,6 +6,7 @@ import {getCard, getPlayers, ICard, IState} from "./Players"
 
 const names = ['North','East','South','West']
 const initialState: IState = {
+    game_on: false,
     cards: Object.create(null) as Record<string, ICard>,
     sel_card: null,
     cur_gt: -1,
@@ -69,6 +70,7 @@ const gameTableSlice = createSlice({
             state.sel_card = state.cards[id] ?? null
         },
         begin(state) {
+            state.game_on = true
             state.cur_gt = 0
             state.rnd_gt = 0
             console.log("%c [gt round]", 'color: #859900', state.rnd_gt)

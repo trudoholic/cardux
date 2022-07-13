@@ -74,7 +74,7 @@ function GameTable() {
                         <div key={p.id} className={classes.player}>
                             <Button
                                 variant="contained"
-                                color ={state.cur_pt === pi ? "success" : "primary"}
+                                color={state.cur_pt === pi ? "success" : "primary"}
                                 startIcon={state.cur_gt === pi && <LocalPoliceIcon />}
                                 onClick={() => {
                                     dispatch(log(p.id))
@@ -128,7 +128,7 @@ function GameTable() {
                 </div>
             </div>
             <div className={classes.footer}>
-                <Button
+                <Button disabled={state.game_on}
                     variant="contained"
                     color="primary"
                     onClick={() => {
@@ -138,7 +138,7 @@ function GameTable() {
                     NEW
                 </Button>
 
-                <Button
+                <Button disabled={!state.game_on}
                     variant="contained"
                     color="success"
                     onClick={() => {
@@ -148,7 +148,7 @@ function GameTable() {
                     NEXT
                 </Button>
 
-                <Button
+                <Button disabled={!state.game_on}
                     variant="contained"
                     color="primary"
                     onClick={() => {

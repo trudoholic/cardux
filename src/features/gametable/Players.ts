@@ -6,6 +6,7 @@ export interface ICard {
 }
 
 export interface IState {
+    game_on: boolean
     cards: Record<string, ICard>
     sel_card: ICard | null
     cur_gt: number
