@@ -8,8 +8,6 @@ import {gameStyles} from "./gameStyles"
 import {gameState, add, begin, change_gt, change_pt, end, log, next, remove, select} from "./gameTableSlice"
 import Player from "./Player";
 
-let cnt = 0
-
 function GameTable() {
 
     //React Redux Hooks
@@ -50,7 +48,7 @@ function GameTable() {
                     variant="contained"
                     color="primary"
                     onClick={() => {
-                        dispatch(add(++cnt + ''))
+                        dispatch(add(''))
                     }}
                 >
                     ADD

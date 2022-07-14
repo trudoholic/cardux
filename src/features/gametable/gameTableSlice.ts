@@ -4,8 +4,10 @@ import { RootState } from "../../app/store"
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt} from "./Logger"
 import {getCard, getCommon, getPlayers, ICard, IState} from "./Players"
 
+let cnt = 0
 const N = 4, move_token = true
 const names = ['North','East','South','West']
+
 const initialState: IState = {
     game_on: false,
     cards: Object.create(null) as Record<string, ICard>,
@@ -44,8 +46,8 @@ const gameTableSlice = createSlice({
         },
 
         add(state, action: PayloadAction<string>) {
-            if (state.cur_pt < 0) return
-            const id = action.payload
+            if (!state.game_on) return
+            const id = ++cnt + ''
             const cards = state.pp[state.cur_pt].zones[0].cards
             const card = getCard(id)
             cards.push(card)
@@ -55,7 +57,7 @@ const gameTableSlice = createSlice({
         },
 
         remove(state, action: PayloadAction<string>) {
-            if (state.cur_pt < 0) return
+            if (!state.game_on) return
             const cards = state.pp[state.cur_pt].zones[0].cards
             if (cards.length) {
                 const card = cards.pop() as {id: string}

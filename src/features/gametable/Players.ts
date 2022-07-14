@@ -51,7 +51,7 @@ function getZones(ids: string[]): IZone[] {
 export function getCommon(id: string): IPlayer {
     return {
         id,
-        zones: getZones(['deck','pile']),
+        zones: getZones(['play','deck','pile']),
     }
 }
 
