@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt} from "./Logger"
-import {getCard, getCommon, getPlayers, ICard, IState} from "./Players"
+import {getCard, getCommon, getPlayers, ICard, IState, IZone} from "./Players"
 
 let cnt = 0
 const N = 4, move_token = true
@@ -35,6 +35,13 @@ const get_new_gt = (gt: number) => {
     return new_gt
 }
 
+function createCardInZone(state: IState, zone: IZone, id: number): ICard {
+    const card = getCard('' + id)
+    state.cards['' + id] = card
+    zone.cards.push(card)
+    return card
+}
+
 const gameTableSlice = createSlice({
     name: "gameTable",
     initialState,
@@ -47,13 +54,9 @@ const gameTableSlice = createSlice({
 
         add(state, action: PayloadAction<string>) {
             if (!state.game_on) return
-            const id = ++cnt + ''
-            const cards = state.pp[state.cur_pt].zones[0].cards
-            const card = getCard(id)
-            cards.push(card)
-            state.cards[id] = card
+            const card = createCardInZone(state, state.pp[state.cur_pt].zones[0], ++cnt)
             state.sel_card = card
-            console.log("%c [+]", 'color: #ff00ff', id, cards.length)
+            console.log("%c [+]", 'color: #d33682', card.id)
         },
 
         remove(state, action: PayloadAction<string>) {
@@ -62,7 +65,7 @@ const gameTableSlice = createSlice({
             if (cards.length) {
                 const card = cards.pop() as {id: string}
                 state.sel_card = cards[cards.length - 1]
-                console.log("%c [-]", 'color: #ff00ff', card.id, cards.length)
+                console.log("%c [-]", 'color: #d33682', card.id, cards.length)
             }
             else {
                 state.sel_card = null
@@ -71,14 +74,15 @@ const gameTableSlice = createSlice({
 
         select(state, action: PayloadAction<string>) {
             const id = action.payload
-            console.log("%c [card]", 'color: #ff00ff', id)
+            console.log("%c [card]", 'color: #d33682', id, !!state.cards[id])
             state.sel_card = state.cards[id] ?? null
         },
 
         begin(state) {
-
-            let card_i = 5
-            while (card_i --> 0) state.common.zones[1].cards.push(getCard('' + card_i))
+            let id = 5
+            while (id --> 0) {
+                createCardInZone(state, state.common.zones[1], id)
+            }
 
             state.game_on = true
             state.cur_gt = 0
@@ -125,9 +129,26 @@ const gameTableSlice = createSlice({
             else ket_pt(cur_pt)
         },
 
+        draw(state, action: PayloadAction<string>) {
+            const zone = state.common.zones[1]
+            // const card = state.sel_card
+            // if (card) {
+            if (zone.cards.length) {
+                const card = zone.cards.pop()
+                // :: zone = card->zone
+                // const zone = state.common.zones[1]
+                // zone.cards = zone.cards.filter(c => c.id !== card.id)
+
+                if (card) {
+                    const cards = state.pp[state.cur_pt].zones[0].cards
+                    cards.push(card)
+                }
+            }
+        },
+
     },
 })
 
-export const { add, begin, change_gt, change_pt, end, log, next, remove, select } = gameTableSlice.actions
+export const { add, begin, change_gt, change_pt, draw, end, log, next, remove, select } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer

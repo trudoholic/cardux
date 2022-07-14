@@ -5,7 +5,7 @@ import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
 
 import {gameStyles} from "./gameStyles"
-import {gameState, add, begin, change_gt, change_pt, end, log, next, remove, select} from "./gameTableSlice"
+import {gameState, add, begin, change_gt, change_pt, draw, end, log, next, remove, select} from "./gameTableSlice"
 import Player from "./Player";
 
 function GameTable() {
@@ -62,6 +62,16 @@ function GameTable() {
                     }}
                 >
                     REM
+                </Button>
+
+                <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => {
+                        dispatch(draw(''))
+                    }}
+                >
+                    DRAW
                 </Button>
             </div>
             <div className={classes.main}>
