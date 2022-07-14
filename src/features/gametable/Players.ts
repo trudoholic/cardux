@@ -3,6 +3,7 @@ export interface ICard {
     id: string
     description: string
     flag: boolean
+    zone_id: string
 }
 
 export interface IState {
@@ -31,6 +32,7 @@ export function getCard(id: string): ICard {
         id,
         description: 'Card: ' + id,
         flag: false,
+        zone_id: ''
     }
 }
 

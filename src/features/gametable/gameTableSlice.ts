@@ -39,6 +39,7 @@ function createCardInZone(state: IState, zone: IZone, id: number): ICard {
     const card = getCard('' + id)
     state.cards['' + id] = card
     zone.cards.push(card)
+    card.zone_id = zone.id
     return card
 }
 
@@ -130,18 +131,19 @@ const gameTableSlice = createSlice({
         },
 
         draw(state, action: PayloadAction<string>) {
-            const zone = state.common.zones[1]
+            const zone_src = state.common.zones[1]
             // const card = state.sel_card
             // if (card) {
-            if (zone.cards.length) {
-                const card = zone.cards.pop()
+            if (zone_src.cards.length) {
+                const card = zone_src.cards.pop()
                 // :: zone = card->zone
                 // const zone = state.common.zones[1]
                 // zone.cards = zone.cards.filter(c => c.id !== card.id)
 
                 if (card) {
-                    const cards = state.pp[state.cur_pt].zones[0].cards
-                    cards.push(card)
+                    const zone_dst = state.pp[state.cur_pt].zones[0]
+                    zone_dst.cards.push(card)
+                    card.zone_id = zone_dst.id
                 }
             }
         },
