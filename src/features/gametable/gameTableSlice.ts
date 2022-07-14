@@ -76,11 +76,18 @@ const gameTableSlice = createSlice({
         },
 
         begin(state) {
+
+            let card_i = 5
+            while (card_i --> 0) state.common.zones[1].cards.push(getCard('' + card_i))
+
             state.game_on = true
             state.cur_gt = 0
         },
 
         end(state) {
+            state.common.zones.forEach(zone => zone.cards = [])
+            state.pp.forEach(p => p.zones.forEach(zone => zone.cards = []))
+
             state.game_on = false
             state.cur_gt = -1
             state.rnd_gt = -1
