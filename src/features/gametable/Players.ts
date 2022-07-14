@@ -12,6 +12,7 @@ export interface IState {
     cur_gt: number
     rnd_gt: number
     cur_pt: number
+    common: IPlayer
     pp: IPlayer[]
 }
 
@@ -45,6 +46,13 @@ function getZones(ids: string[]): IZone[] {
     let n = ids.length
     while (n --> 0) zones.unshift(getZone(ids[n]))
     return zones
+}
+
+export function getCommon(id: string): IPlayer {
+    return {
+        id,
+        zones: getZones(['deck','pile']),
+    }
 }
 
 function getPlayer(id: string): IPlayer {

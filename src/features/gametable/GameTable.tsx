@@ -1,20 +1,20 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {useAppSelector, useAppDispatch} from "../../app/hooks";
+import {useAppSelector, useAppDispatch} from "../../app/hooks"
 
 import Button from "@mui/material/Button"
 import Typography from "@mui/material/Typography"
-import LocalPoliceIcon from '@mui/icons-material/LocalPolice'
 
-import { gameState, add, begin, change_gt, change_pt, end, log, next, remove, select } from "./gameTableSlice"
-import { gameStyles  } from "./gameStyles"
+import {gameStyles} from "./gameStyles"
+import {gameState, add, begin, change_gt, change_pt, end, log, next, remove, select} from "./gameTableSlice"
+import Player from "./Player";
 
 let cnt = 0
 
 function GameTable() {
 
     //React Redux Hooks
-    const state = useAppSelector(gameState);
-    const dispatch = useAppDispatch();
+    const state = useAppSelector(gameState)
+    const dispatch = useAppDispatch()
 
     // Hook
     function usePrevious<T>(value: T) {
@@ -68,42 +68,9 @@ function GameTable() {
             </div>
             <div className={classes.main}>
                 <div className={classes.game}>
+                    <Player p={state.common} pi={NaN} />
                     {state.pp.map((p, pi) => (
-                        <div key={p.id} className={classes.player}>
-                            <Button
-                                variant="contained"
-                                color={state.cur_pt === pi ? "success" : "primary"}
-                                startIcon={state.cur_gt === pi && <LocalPoliceIcon />}
-                                onClick={() => {
-                                    dispatch(log(p.id))
-                                }}
-                            >
-                                {p.id}
-                            </Button>
-                            <div>
-                                {p.zones.map(z => (
-                                    <div key={z.id} className={classes.zone}>
-                                        <details open>
-                                            <summary>{z.id}</summary>
-                                            {z.cards.map(card => (
-                                                <div key={card.id}>
-                                                    <Button
-                                                        variant="outlined"
-                                                        color="primary"
-                                                        onClick={() => {
-                                                            dispatch(select(card.id))
-                                                        }}
-                                                    >
-                                                        {card.id}
-                                                    </Button>
-                                                </div>
-                                            ))}
-
-                                        </details>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <Player key={p.id} p={p} pi={pi} />
                     ))}
                 </div>
                 <div className={classes.aside}>

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt} from "./Logger"
-import {getCard, getPlayers, ICard, IState} from "./Players"
+import {getCard, getCommon, getPlayers, ICard, IState} from "./Players"
 
 const N = 4, move_token = true
 const names = ['North','East','South','West']
@@ -13,6 +13,7 @@ const initialState: IState = {
     cur_gt: -1,
     rnd_gt: -1,
     cur_pt: -1,
+    common: getCommon('Common'),
     pp: getPlayers(names)
 }
 
