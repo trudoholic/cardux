@@ -21,8 +21,8 @@ const initialState: IState = {
     pp: getPlayers(config.players)
 }
 
-const begin_game_turn = (gt: number) => {
-    bra_gt(gt)
+const begin_game_turn = (gt: number, rnd_gt: number) => {
+    bra_gt(gt, rnd_gt)
 }
 
 const end_game_turn = (gt: number) => {
@@ -120,12 +120,13 @@ const gameTableSlice = createSlice({
             const [cur_gt, next_gt] = action.payload
             if (cur_gt >= 0) end_game_turn(cur_gt)
 
+            let rnd_gt = -1
             if (! next_gt) {
-                state.rnd_gt += 1
-                console.log("%c [gt round]", 'color: #859900', state.rnd_gt) //GREEN
+                rnd_gt = state.rnd_gt += 1
+                // console.log("%c [gt round]", 'color: #859900', state.rnd_gt) //GREEN
             }
 
-            if (next_gt >= 0) begin_game_turn(next_gt)
+            if (next_gt >= 0) begin_game_turn(next_gt, rnd_gt)
             state.cur_pt = move_token ? next_gt : 0
         },
 
