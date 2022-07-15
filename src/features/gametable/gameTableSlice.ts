@@ -81,7 +81,7 @@ const gameTableSlice = createSlice({
         },
 
         begin(state) {
-            let id = 5
+            let id = 12
             while (id --> 0) {
                 createCardInZone(state, state.common.zones[1], id)
             }
@@ -144,10 +144,12 @@ const gameTableSlice = createSlice({
         },
 
         play(state, action: PayloadAction<string>) {
-            const hand = get_hand(state)
-            if (hand.length) {
-                const card = hand.pop()
-                if (card) {
+            const card = state.sel_card
+            if (card && 'hand' === card.zone_id) {
+                let hand = get_hand(state)
+                const idx = hand.findIndex(c => c.id === card.id)
+                if (idx >= 0) {
+                    hand.splice(idx, 1)
                     const keep = get_keep(state)
                     keep.push(card)
                     state.cards[card.id].zone_id = 'keep'
