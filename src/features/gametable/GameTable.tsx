@@ -74,7 +74,7 @@ function GameTable() {
                     DRAW
                 </Button>
 
-                <Button
+                <Button disabled={!state.sel_card_valid}
                     variant="contained"
                     color="success"
                     onClick={() => {

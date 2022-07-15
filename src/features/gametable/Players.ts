@@ -3,6 +3,7 @@ export interface ICard {
     id: string
     description: string
     flag: boolean
+    player_id: string
     zone_id: string
 }
 
@@ -10,6 +11,7 @@ export interface IState {
     game_on: boolean
     cards: Record<string, ICard>
     sel_card: ICard | null
+    sel_card_valid: boolean
     cur_gt: number
     rnd_gt: number
     cur_pt: number
@@ -32,6 +34,7 @@ export function getCard(id: string): ICard {
         id,
         description: 'Card: ' + id,
         flag: false,
+        player_id: '',
         zone_id: ''
     }
 }

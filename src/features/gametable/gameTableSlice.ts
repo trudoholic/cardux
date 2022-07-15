@@ -13,6 +13,7 @@ const initialState: IState = {
     game_on: false,
     cards: Object.create(null) as Record<string, ICard>,
     sel_card: null,
+    sel_card_valid: false,
     cur_gt: -1,
     rnd_gt: -1,
     cur_pt: -1,
@@ -77,7 +78,10 @@ const gameTableSlice = createSlice({
         select(state, action: PayloadAction<string>) {
             const id = action.payload
             state.sel_card = state.cards[id] ?? null
-            console.log("%c [card]", 'color: #d33682', id, state.sel_card?.zone_id ?? 'null')
+            state.sel_card_valid = state.cards
+                && state.sel_card.player_id === 'p' + state.cur_pt
+                && state.sel_card.zone_id === 'hand'
+            console.log("%c [card]", 'color: #d33682', id, state.sel_card?.player_id, state.sel_card?.zone_id)
         },
 
         begin(state) {
@@ -138,6 +142,7 @@ const gameTableSlice = createSlice({
                 if (card) {
                     const hand = get_hand(state)
                     hand.push(card)
+                    state.cards[card.id].player_id = 'p' + state.cur_pt
                     state.cards[card.id].zone_id = 'hand'
                 }
             }
