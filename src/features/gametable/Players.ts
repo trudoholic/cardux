@@ -16,6 +16,7 @@ export interface IState {
     cur_gt: number
     rnd_gt: number
     cur_pt: number
+    cur_ph: number
     common: IPlayer
     pp: IPlayer[]
 }

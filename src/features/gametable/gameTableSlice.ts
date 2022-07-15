@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
 import config from "./config";
-import {log_m, bra_gt, ket_gt, bra_pt, ket_pt} from "./Logger"
+import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
 import {getCard, getCommon, getPlayers, ICard, IState, IZone} from "./Players"
 import {get_deck, get_hand, get_keep} from "./Zones"
 
@@ -17,6 +17,7 @@ const initialState: IState = {
     cur_gt: -1,
     rnd_gt: -1,
     cur_pt: -1,
+    cur_ph: -1,
     common: getCommon('Common'),
     pp: getPlayers(config.players)
 }
@@ -123,7 +124,6 @@ const gameTableSlice = createSlice({
             let rnd_gt = -1
             if (! next_gt) {
                 rnd_gt = state.rnd_gt += 1
-                // console.log("%c [gt round]", 'color: #859900', state.rnd_gt) //GREEN
             }
 
             if (next_gt >= 0) begin_game_turn(next_gt, rnd_gt)
@@ -132,7 +132,12 @@ const gameTableSlice = createSlice({
 
         change_pt(state, action: PayloadAction<[number, number]>) {
             const [cur_pt, next_pt] = action.payload
-            if (next_pt >= 0) bra_pt(next_pt)
+            if (next_pt >= 0) {
+                bra_pt(next_pt)
+                state.cur_ph = 0
+
+                bra_ph(state.cur_ph)
+            }
             else ket_pt(cur_pt)
         },
 
