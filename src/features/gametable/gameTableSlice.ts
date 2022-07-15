@@ -1,8 +1,9 @@
-import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt} from "./Logger"
 import {getCard, getCommon, getPlayers, ICard, IState, IZone} from "./Players"
+import {get_deck, get_hand, get_keep} from "./Zones"
 
 let cnt = 0
 const N = 4, move_token = true
@@ -75,8 +76,8 @@ const gameTableSlice = createSlice({
 
         select(state, action: PayloadAction<string>) {
             const id = action.payload
-            console.log("%c [card]", 'color: #d33682', id, !!state.cards[id])
             state.sel_card = state.cards[id] ?? null
+            console.log("%c [card]", 'color: #d33682', id, state.sel_card?.zone_id ?? 'null')
         },
 
         begin(state) {
@@ -131,19 +132,25 @@ const gameTableSlice = createSlice({
         },
 
         draw(state, action: PayloadAction<string>) {
-            const zone_src = state.common.zones[1]
-            // const card = state.sel_card
-            // if (card) {
-            if (zone_src.cards.length) {
-                const card = zone_src.cards.pop()
-                // :: zone = card->zone
-                // const zone = state.common.zones[1]
-                // zone.cards = zone.cards.filter(c => c.id !== card.id)
-
+            const deck = get_deck(state)
+            if (deck.length) {
+                const card = deck.pop()
                 if (card) {
-                    const zone_dst = state.pp[state.cur_pt].zones[0]
-                    zone_dst.cards.push(card)
-                    card.zone_id = zone_dst.id
+                    const hand = get_hand(state)
+                    hand.push(card)
+                    state.cards[card.id].zone_id = 'hand'
+                }
+            }
+        },
+
+        play(state, action: PayloadAction<string>) {
+            const hand = get_hand(state)
+            if (hand.length) {
+                const card = hand.pop()
+                if (card) {
+                    const keep = get_keep(state)
+                    keep.push(card)
+                    state.cards[card.id].zone_id = 'keep'
                 }
             }
         },
@@ -151,6 +158,6 @@ const gameTableSlice = createSlice({
     },
 })
 
-export const { add, begin, change_gt, change_pt, draw, end, log, next, remove, select } = gameTableSlice.actions
+export const { add, begin, change_gt, change_pt, draw, end, log, next, play, remove, select } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer
