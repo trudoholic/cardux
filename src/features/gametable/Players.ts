@@ -1,3 +1,4 @@
+import config from "./config";
 
 export interface ICard {
     id: string
@@ -56,14 +57,14 @@ function getZones(ids: string[]): IZone[] {
 export function getCommon(id: string): IPlayer {
     return {
         id,
-        zones: getZones(['play','deck','pile']),
+        zones: getZones(config.common_zones),
     }
 }
 
 function getPlayer(id: string): IPlayer {
     return {
         id,
-        zones: getZones(['hand','keep']),
+        zones: getZones(config.player_zones),
     }
 }
 

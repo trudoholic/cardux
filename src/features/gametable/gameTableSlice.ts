@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
+import config from "./config";
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt} from "./Logger"
 import {getCard, getCommon, getPlayers, ICard, IState, IZone} from "./Players"
 import {get_deck, get_hand, get_keep} from "./Zones"
 
 let cnt = 0
-const N = 4, move_token = true
-const names = ['North','East','South','West']
+const N = config.players.length, move_token = true
 
 const initialState: IState = {
     game_on: false,
@@ -18,7 +18,7 @@ const initialState: IState = {
     rnd_gt: -1,
     cur_pt: -1,
     common: getCommon('Common'),
-    pp: getPlayers(names)
+    pp: getPlayers(config.players)
 }
 
 const begin_game_turn = (gt: number) => {
@@ -78,7 +78,7 @@ const gameTableSlice = createSlice({
         select(state, action: PayloadAction<string>) {
             const id = action.payload
             state.sel_card = state.cards[id] ?? null
-            state.sel_card_valid = state.cards
+            state.sel_card_valid = state.sel_card
                 && state.sel_card.player_id === 'p' + state.cur_pt
                 && state.sel_card.zone_id === 'hand'
             console.log("%c [card]", 'color: #d33682', id, state.sel_card?.player_id, state.sel_card?.zone_id)
@@ -158,6 +158,7 @@ const gameTableSlice = createSlice({
                     const keep = get_keep(state)
                     keep.push(card)
                     state.cards[card.id].zone_id = 'keep'
+                    state.sel_card_valid = false
                 }
             }
         },
