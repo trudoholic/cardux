@@ -4,8 +4,8 @@ import {useAppSelector, useAppDispatch} from "../../app/hooks"
 import Button from "@mui/material/Button"
 
 import {gameStyles} from "./gameStyles"
-import {gameState, log} from "./gameTableSlice"
-import Typography from "@mui/material/Typography";
+import {gameState, log, select} from "./gameTableSlice"
+import config from "./config";
 
 function Aside() {
 
@@ -28,9 +28,21 @@ function Aside() {
                     {state.sel_card.id}
                 </Button>
             </div> : <div>
-                <Typography>spam</Typography>
-                <Typography>ham</Typography>
-                <Typography>eggs</Typography>
+                {config.phases.map(phase => (
+                    <div key={phase}>
+                        <Button
+                            sx={{ minWidth: "50%", m: 1/4 }}
+                            variant="outlined"
+                            color="primary"
+                            // onClick={() => {
+                            //     dispatch(select(card.id))
+                            // }}
+                        >
+                            {phase}
+                        </Button>
+                    </div>
+                ))}
+
             </div>
             }
         </div>

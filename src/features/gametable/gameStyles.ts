@@ -13,7 +13,7 @@ export const gameStyles = makeStyles({
         flexShrink: 0,
         justifyContent: "center",
         gap: "16px",
-        backgroundColor: "#ccc",
+        backgroundColor: "#a5d6a7",
         padding: "16px",
     },
     main: {
@@ -33,7 +33,7 @@ export const gameStyles = makeStyles({
         display: "flex",
         flexDirection: "column",
         flex: "0 0 320px",
-        backgroundColor: "#999",
+        backgroundColor: "#eee",
         padding: "16px",
     },
     footer: {
@@ -41,7 +41,7 @@ export const gameStyles = makeStyles({
         flexShrink: 0,
         justifyContent: "center",
         gap: "16px",
-        backgroundColor: "#ccc",
+        backgroundColor: "#a5d6a7",
         padding: "16px",
     },
     player: {

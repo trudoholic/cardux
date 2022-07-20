@@ -44,6 +44,7 @@ function Player(props: IPlayerProps) {
                             {z.cards.map(card => (
                                 <div key={card.id}>
                                     <Button
+                                        sx={{ m: 1/4 }}
                                         variant="outlined"
                                         color="primary"
                                         onClick={() => {
