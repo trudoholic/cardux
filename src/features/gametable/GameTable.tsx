@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import {useAppSelector, useAppDispatch} from "../../app/hooks"
 
 import {gameStyles} from "./gameStyles"
-import {gameState, change_gt, change_pt, change_ph} from "./gameTableSlice"
+import {gameState, change_gt, change_pt, change_ph, log, next} from "./gameTableSlice"
 
 import Header from "./Header"
 import Aside from "./Aside"
@@ -27,6 +27,7 @@ function GameTable() {
     //React Hooks
     const prev_cur_ph = usePrevious(state.cur_ph)
     useEffect(() => {
+        // dispatch(log(`Ph: ${prev_cur_ph} -> ${state.cur_ph}`))
         if (null != prev_cur_ph) {
             dispatch(change_ph([prev_cur_ph, state.cur_ph]))
         }
@@ -34,6 +35,7 @@ function GameTable() {
 
     const prev_cur_pt = usePrevious(state.cur_pt)
     useEffect(() => {
+        // dispatch(log(`PT: ${prev_cur_pt} -> ${state.cur_pt}`))
         if (null != prev_cur_pt) {
             dispatch(change_pt([prev_cur_pt, state.cur_pt]))
         }
@@ -41,10 +43,15 @@ function GameTable() {
 
     const prev_cur_gt = usePrevious(state.cur_gt)
     useEffect(() => {
+        // dispatch(log(`GT: ${prev_cur_gt} -> ${state.cur_gt}`))
         if (null != prev_cur_gt) {
             dispatch(change_gt([prev_cur_gt, state.cur_gt]))
         }
     }, [state.cur_gt])
+
+    useEffect(() => {
+        dispatch(next())
+    }, [state.next_cnt])
 
     const classes = gameStyles()
 

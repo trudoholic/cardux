@@ -3,11 +3,12 @@ import { RootState } from "../../app/store"
 
 import config from "./config";
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
-import {getCard, getCommon, getPlayers, ICard, IState, IZone} from "./Players"
+import {getCard, getCommon, getIdx, getPlayers, ICard, IState, IZone} from "./Players"
 import {get_deck, get_hand, get_keep} from "./Zones"
 
 let cnt = 0
 const N = config.players.length, move_token = true
+const phasesIdx = getIdx(config.phases)
 
 const initialState: IState = {
     game_on: false,
@@ -18,16 +19,10 @@ const initialState: IState = {
     rnd_gt: -1,
     cur_pt: -1,
     cur_ph: -1,
+    cnt: 0,
+    next_cnt: 0,
     common: getCommon('Common'),
     pp: getPlayers(config.players)
-}
-
-const begin_game_turn = (gt: number, rnd_gt: number) => {
-    bra_gt(gt, rnd_gt)
-}
-
-const end_game_turn = (gt: number) => {
-    ket_gt(gt)
 }
 
 const get_new_gt = (gt: number) => {
@@ -82,7 +77,7 @@ const gameTableSlice = createSlice({
             state.sel_card_valid = state.sel_card
                 && state.sel_card.player_id === 'p' + state.cur_pt
                 && state.sel_card.zone_id === 'hand'
-            console.log("%c [card]", 'color: #d33682', id, state.sel_card?.player_id, state.sel_card?.zone_id)
+            // console.log("%c [card]", 'color: #d33682', id, state.sel_card?.player_id, state.sel_card?.zone_id)
         },
 
         begin(state) {
@@ -100,56 +95,66 @@ const gameTableSlice = createSlice({
             state.pp.forEach(p => p.zones.forEach(zone => zone.cards = []))
 
             state.game_on = false
-            state.cur_gt = -1
-            state.rnd_gt = -1
+            state.cur_ph = -1
             state.cur_pt = -1
+            state.rnd_gt = -1
+            state.cur_gt = -1
         },
 
         next(state) {
-            const next_pt = (state.cur_pt + 1) % N
-            ket_pt(state.cur_pt)
+            state.cnt += 1
+            log_m(`- ${config.phases[state.cur_ph]} : ${state.cnt} / ${config.ph_lim[state.cur_ph]}`)
+            if (state.cnt < config.ph_lim[state.cur_ph]) return
 
-            if ((move_token ? state.cur_gt : 0) === next_pt) {
-                state.cur_gt = get_new_gt(state.cur_gt)
+            ket_ph(state.cur_ph)
+
+            const next_ph = state.cur_ph + 1
+            if (config.phases.length === next_ph) {
+
+                const next_pt = (state.cur_pt + 1) % N
+                ket_pt(state.cur_pt)
+
+                if ((move_token ? state.cur_gt : 0) === next_pt) {
+                    state.cur_gt = get_new_gt(state.cur_gt)
+                }
+                else {
+                    state.cur_pt = next_pt
+                }
+
             }
-            else {
-                state.cur_pt = next_pt
-            }
+            else state.cur_ph = next_ph
         },
 
         change_gt(state, action: PayloadAction<[number, number]>) {
             const [cur_gt, next_gt] = action.payload
-            if (cur_gt >= 0) end_game_turn(cur_gt)
+            if (cur_gt >= 0) ket_gt(cur_gt)
 
             let rnd_gt = -1
             if (! next_gt) {
                 rnd_gt = state.rnd_gt += 1
             }
 
-            if (next_gt >= 0) begin_game_turn(next_gt, rnd_gt)
-            state.cur_pt = move_token ? next_gt : 0
+            if (next_gt >= 0) {
+                bra_gt(next_gt, rnd_gt)
+                state.cur_pt = move_token ? next_gt : 0
+            }
         },
 
         change_pt(state, action: PayloadAction<[number, number]>) {
             const [cur_pt, next_pt] = action.payload
             if (next_pt >= 0) {
                 bra_pt(next_pt)
-
-                // state.cur_ph = 0
-                state.cur_ph = (state.cur_ph + 1) % config.phases.length
-
-                // bra_ph(state.cur_ph)
+                state.cur_ph = 0
             }
             else ket_pt(cur_pt)
         },
 
         change_ph(state, action: PayloadAction<[number, number]>) {
-            bra_ph(state.cur_ph)
-            // const [cur_ph, next_ph] = action.payload
-            // if (next_ph >= 0) {
-            //     bra_ph(next_ph)
-            // }
-            // else ket_pt(cur_ph)
+            const [cur_ph, next_ph] = action.payload
+            if (next_ph >= 0) {
+                bra_ph(next_ph)
+                state.cnt = 0
+            }
         },
 
         draw(state, action: PayloadAction<string>) {
@@ -161,6 +166,8 @@ const gameTableSlice = createSlice({
                     hand.push(card)
                     state.cards[card.id].player_id = 'p' + state.cur_pt
                     state.cards[card.id].zone_id = 'hand'
+
+                    if (phasesIdx['draw'] === state.cur_ph) state.next_cnt += 1
                 }
             }
         },
@@ -176,6 +183,8 @@ const gameTableSlice = createSlice({
                     keep.push(card)
                     state.cards[card.id].zone_id = 'keep'
                     state.sel_card_valid = false
+
+                    if (phasesIdx['play'] === state.cur_ph) state.next_cnt += 1
                 }
             }
         },

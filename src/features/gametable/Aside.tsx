@@ -39,7 +39,7 @@ function Aside() {
                             //     dispatch(select(card.id))
                             // }}
                         >
-                            {phase}
+                            {phase + ' ' + (config.ph_lim[i] ?? '')}
                         </Button>
                     </div>
                 ))}

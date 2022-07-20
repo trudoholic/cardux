@@ -52,7 +52,7 @@ export const gameStyles = makeStyles({
         // alignItems: "center",
         gap: "16px",
         backgroundColor: "#e8f5e9",
-        border: "1px solid green",
+        border: "1px solid #1b5e2040",
     },
     zone: {
         // display: "flex",
@@ -61,7 +61,8 @@ export const gameStyles = makeStyles({
         // gap: "16px",
         // backgroundColor: "#ffc",
         margin: "16px",
-        border: "1px solid blue",
+        border: "1px solid #0d47a140",
+        borderRadius: "8px",
     },
 })
 

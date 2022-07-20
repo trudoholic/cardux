@@ -1,3 +1,5 @@
+import config from "./config";
+
 /* Solarized */
 const BLUE    = '#268bd2'
 const CYAN    = '#2aa198'
@@ -24,22 +26,23 @@ export function ket_gt(gt: number) {
 }
 
 export function bra_pt(pt: number) {
-    console.group(`%c PT: `, 'color:' + BLUE, pt)
+    console.group(`%c PT: `, 'color:' + BLUE, pt, config.players[pt])
     // console.groupCollapsed(`%c PT: `, 'color:' + BLUE, pt)
-    console.log(`%c <pt ${pt}>`, 'color:' + BLUE)
+    // console.log(`%c <pt ${pt}>`, 'color:' + BLUE)
 }
 
 export function ket_pt(pt: number) {
-    console.log(`%c </pt ${pt}>`, 'color:' + BLUE)
+    // console.log(`%c </pt ${pt}>`, 'color:' + BLUE)
     console.groupEnd()
 }
 
 export function bra_ph(ph: number) {
-    // console.group(`%c PH: `, 'color:' + ORANGE, ph)
-    console.log(`%c \t<ph ${ph}>`, 'color:' + ORANGE)
+    console.group(`%c PH: `, 'color:' + CYAN, ph, config.phases[ph] ?? '-')
+    // console.group(`%c PH: ${ph} ${config.phases[ph] ?? '-'}`, 'color:' + CYAN)
+    // console.log(`%c <ph ${ph} ${config.phases[ph] ?? '-'}>`, 'color:' + CYAN)
 }
 
 export function ket_ph(ph: number) {
-    console.log(`%c \t</ph ${ph}>`, 'color:' + ORANGE)
-    // console.groupEnd()
+    // console.log(`%c </ph ${ph}>`, 'color:' + CYAN)
+    console.groupEnd()
 }

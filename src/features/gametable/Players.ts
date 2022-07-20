@@ -1,4 +1,5 @@
 import config from "./config";
+import {next} from "./gameTableSlice";
 
 export interface ICard {
     id: string
@@ -17,6 +18,8 @@ export interface IState {
     rnd_gt: number
     cur_pt: number
     cur_ph: number
+    cnt: number
+    next_cnt: number
     common: IPlayer
     pp: IPlayer[]
 }
@@ -74,4 +77,10 @@ export function getPlayers(ids: string[]): IPlayer[] {
     let n = ids.length
     while (n --> 0) players.unshift(getPlayer(ids[n]))
     return players
+}
+
+export function getIdx(arr: string[]): Record<string, number> {
+    const m: Record<string, number> = Object.create(null)
+    arr.forEach((s, i) => m[s] = i)
+    return m
 }
