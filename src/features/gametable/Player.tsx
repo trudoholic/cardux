@@ -30,7 +30,8 @@ function Player(props: IPlayerProps) {
                 color={isNaN(pi) ? "secondary" : state.cur_pt === pi ? "success" : "primary"}
                 startIcon={state.cur_gt === pi && <LocalPoliceIcon />}
                 onClick={() => {
-                    dispatch(log(p.id))
+                    // dispatch(log(p.id))
+                    dispatch(select(''))
                 }}
             >
                 {p.id}

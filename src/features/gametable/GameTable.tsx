@@ -1,12 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {useAppSelector, useAppDispatch} from "../../app/hooks"
 
-import Button from "@mui/material/Button"
-import Typography from "@mui/material/Typography"
-
 import {gameStyles} from "./gameStyles"
-import {gameState, add, begin, change_gt, change_pt, draw, end, log, next, play, remove} from "./gameTableSlice"
-import Player from "./Player";
+import {gameState, change_gt, change_pt} from "./gameTableSlice"
+
+import Header from "./Header"
+import Aside from "./Aside"
+import Player from "./Player"
+import Footer from "./Footer"
 
 function GameTable() {
 
@@ -43,47 +44,7 @@ function GameTable() {
     return (
 
         <div className={classes.root}>
-            <div className={classes.header}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                        dispatch(add(''))
-                    }}
-                >
-                    ADD
-                </Button>
-
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                        dispatch(remove(''))
-                    }}
-                >
-                    REM
-                </Button>
-
-                <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => {
-                        dispatch(draw(''))
-                    }}
-                >
-                    DRAW
-                </Button>
-
-                <Button disabled={!state.sel_card_valid}
-                    variant="contained"
-                    color="success"
-                    onClick={() => {
-                        dispatch(play(''))
-                    }}
-                >
-                    PLAY
-                </Button>
-            </div>
+            <Header />
             <div className={classes.main}>
                 <div className={classes.game}>
                     <Player p={state.common} pi={NaN} />
@@ -91,56 +52,9 @@ function GameTable() {
                         <Player key={p.id} p={p} pi={pi} />
                     ))}
                 </div>
-                <div className={classes.aside}>
-                    {state.sel_card ? <div>
-                            <Button
-                                variant="outlined"
-                                color="primary"
-                                onClick={() => {
-                                    dispatch(log(state.sel_card?.id ?? ''))
-                                }}
-                            >
-                                {state.sel_card.id}
-                            </Button>
-                        </div> : <div>
-                            <Typography>spam</Typography>
-                            <Typography>ham</Typography>
-                            <Typography>eggs</Typography>
-                        </div>
-                    }
-                </div>
+                <Aside />
             </div>
-            <div className={classes.footer}>
-                <Button disabled={state.game_on}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                        dispatch(begin())
-                    }}
-                >
-                    NEW
-                </Button>
-
-                <Button disabled={!state.game_on}
-                    variant="contained"
-                    color="success"
-                    onClick={() => {
-                        dispatch(next())
-                    }}
-                >
-                    NEXT
-                </Button>
-
-                <Button disabled={!state.game_on}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                        dispatch(end())
-                    }}
-                >
-                    END
-                </Button>
-            </div>
+            <Footer />
         </div>
 
     )
