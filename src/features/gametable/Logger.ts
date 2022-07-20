@@ -26,11 +26,11 @@ export function ket_gt(gt: number) {
 export function bra_pt(pt: number) {
     console.group(`%c PT: `, 'color:' + BLUE, pt)
     // console.groupCollapsed(`%c PT: `, 'color:' + BLUE, pt)
-    // console.log(`%c <pt ${pt}>`, 'color:' + BLUE)
+    console.log(`%c <pt ${pt}>`, 'color:' + BLUE)
 }
 
 export function ket_pt(pt: number) {
-    // console.log(`%c </pt ${pt}>`, 'color:' + BLUE)
+    console.log(`%c </pt ${pt}>`, 'color:' + BLUE)
     console.groupEnd()
 }
 

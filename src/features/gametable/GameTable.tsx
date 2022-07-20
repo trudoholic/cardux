@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import {useAppSelector, useAppDispatch} from "../../app/hooks"
 
 import {gameStyles} from "./gameStyles"
-import {gameState, change_gt, change_pt} from "./gameTableSlice"
+import {gameState, change_gt, change_pt, change_ph} from "./gameTableSlice"
 
 import Header from "./Header"
 import Aside from "./Aside"
@@ -25,6 +25,13 @@ function GameTable() {
     }
 
     //React Hooks
+    const prev_cur_ph = usePrevious(state.cur_ph)
+    useEffect(() => {
+        if (null != prev_cur_ph) {
+            dispatch(change_ph([prev_cur_ph, state.cur_ph]))
+        }
+    }, [state.cur_ph])
+
     const prev_cur_pt = usePrevious(state.cur_pt)
     useEffect(() => {
         if (null != prev_cur_pt) {

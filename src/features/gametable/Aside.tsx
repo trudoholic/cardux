@@ -28,11 +28,12 @@ function Aside() {
                     {state.sel_card.id}
                 </Button>
             </div> : <div>
-                {config.phases.map(phase => (
+                {config.phases.map((phase, i) => (
                     <div key={phase}>
                         <Button
                             sx={{ minWidth: "50%", m: 1/4 }}
-                            variant="outlined"
+                            // variant="outlined"
+                            variant={state.cur_ph === i ? "contained" : "outlined"}
                             color="primary"
                             // onClick={() => {
                             //     dispatch(select(card.id))

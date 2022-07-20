@@ -134,11 +134,22 @@ const gameTableSlice = createSlice({
             const [cur_pt, next_pt] = action.payload
             if (next_pt >= 0) {
                 bra_pt(next_pt)
-                state.cur_ph = 0
 
-                bra_ph(state.cur_ph)
+                // state.cur_ph = 0
+                state.cur_ph = (state.cur_ph + 1) % config.phases.length
+
+                // bra_ph(state.cur_ph)
             }
             else ket_pt(cur_pt)
+        },
+
+        change_ph(state, action: PayloadAction<[number, number]>) {
+            bra_ph(state.cur_ph)
+            // const [cur_ph, next_ph] = action.payload
+            // if (next_ph >= 0) {
+            //     bra_ph(next_ph)
+            // }
+            // else ket_pt(cur_ph)
         },
 
         draw(state, action: PayloadAction<string>) {
@@ -172,6 +183,6 @@ const gameTableSlice = createSlice({
     },
 })
 
-export const { add, begin, change_gt, change_pt, draw, end, log, next, play, remove, select } = gameTableSlice.actions
+export const { add, begin, change_gt, change_pt, change_ph, draw, end, log, next, play, remove, select } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer
