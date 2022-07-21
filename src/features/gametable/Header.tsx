@@ -5,6 +5,7 @@ import Button from "@mui/material/Button"
 
 import {gameStyles} from "./gameStyles"
 import {gameState, add, draw, play, remove} from "./gameTableSlice"
+import config from "./config";
 
 function Header() {
 
@@ -37,6 +38,11 @@ function Header() {
             </Button>
 
             <Button
+                disabled={
+                    !state.game_on
+                    || 'draw' !== config.phases[state.cur_ph]
+                    || !state.common.zones[1].cards.length
+                }
                 variant="contained"
                 color="success"
                 onClick={() => {
@@ -46,12 +52,17 @@ function Header() {
                 DRAW
             </Button>
 
-            <Button disabled={!state.sel_card_valid}
-                    variant="contained"
-                    color="success"
-                    onClick={() => {
-                        dispatch(play(''))
-                    }}
+            <Button
+                disabled={
+                    !state.game_on
+                    || 'play' !== config.phases[state.cur_ph]
+                    || !state.sel_card_valid
+                }
+                variant="contained"
+                color="success"
+                onClick={() => {
+                    dispatch(play(''))
+                }}
             >
                 PLAY
             </Button>

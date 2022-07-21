@@ -1,5 +1,4 @@
 import config from "./config";
-import {next} from "./gameTableSlice";
 
 export interface ICard {
     id: string
@@ -22,6 +21,21 @@ export interface IState {
     next_cnt: number
     common: IPlayer
     pp: IPlayer[]
+}
+
+export const initialState: IState = {
+    game_on: false,
+    cards: Object.create(null) as Record<string, ICard>,
+    sel_card: null,
+    sel_card_valid: false,
+    cur_gt: -1,
+    rnd_gt: -1,
+    cur_pt: -1,
+    cur_ph: -1,
+    cnt: 0,
+    next_cnt: 0,
+    common: getCommon('Common'),
+    pp: getPlayers(config.players)
 }
 
 export interface IZone {

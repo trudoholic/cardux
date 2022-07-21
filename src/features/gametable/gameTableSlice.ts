@@ -3,27 +3,12 @@ import { RootState } from "../../app/store"
 
 import config from "./config";
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
-import {getCard, getCommon, getIdx, getPlayers, ICard, IState, IZone} from "./Players"
+import {ICard, IState, IZone, initialState, getCard, getIdx} from "./Players"
 import {get_deck, get_hand, get_keep} from "./Zones"
 
 let cnt = 0
 const N = config.players.length, move_token = true
 const phasesIdx = getIdx(config.phases)
-
-const initialState: IState = {
-    game_on: false,
-    cards: Object.create(null) as Record<string, ICard>,
-    sel_card: null,
-    sel_card_valid: false,
-    cur_gt: -1,
-    rnd_gt: -1,
-    cur_pt: -1,
-    cur_ph: -1,
-    cnt: 0,
-    next_cnt: 0,
-    common: getCommon('Common'),
-    pp: getPlayers(config.players)
-}
 
 const get_new_gt = (gt: number) => {
     let new_gt = gt + 1
