@@ -8,7 +8,6 @@ import {get_deck, get_hand, get_keep} from "./Zones"
 
 let cnt = 0
 const N = config.players.length, move_token = true
-const phasesIdx = getIdx(config.phases)
 
 const get_new_gt = (gt: number) => {
     let new_gt = gt + 1
@@ -27,7 +26,7 @@ function createCardInZone(state: IState, zone: IZone, id: number): ICard {
 }
 
 function selectCard(state: IState) {
-    if (phasesIdx['play'] === state.cur_ph) {
+    if (is_phase(state, 'play')) {
         let hand = get_hand(state)
         if (hand.length) {
             state.sel_card = state.cards[hand[0].id]
@@ -35,6 +34,8 @@ function selectCard(state: IState) {
         }
     }
 }
+
+function is_phase(state: IState, phase_id: string) { return phase_id === config.phases[state.cur_ph] }
 
 const gameTableSlice = createSlice({
     name: "gameTable",
@@ -76,7 +77,7 @@ const gameTableSlice = createSlice({
         },
 
         begin(state) {
-            let id = 12
+            let id = 120
             while (id --> 0) {
                 createCardInZone(state, state.common.zones[1], id)
             }
@@ -163,7 +164,7 @@ const gameTableSlice = createSlice({
                     state.cards[card.id].player_id = 'p' + state.cur_pt
                     state.cards[card.id].zone_id = 'hand'
 
-                    if (phasesIdx['draw'] === state.cur_ph) state.next_cnt += 1
+                    if (is_phase(state, 'draw')) state.next_cnt += 1
                 }
             }
         },
@@ -181,7 +182,7 @@ const gameTableSlice = createSlice({
                     state.sel_card_valid = false
                     selectCard(state)
 
-                    if (phasesIdx['play'] === state.cur_ph) state.next_cnt += 1
+                    if (is_phase(state, 'play')) state.next_cnt += 1
                 }
             }
         },

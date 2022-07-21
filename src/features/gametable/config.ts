@@ -5,7 +5,7 @@ const config = {
     common_zones: ['play','deck','pile'],
     // phases: ['draw','play','spam','ham','eggs'],
     phases: ['draw','play'],
-    ph_lim: [3,2],
+    ph_lim: [2,1],
 }
 
 export default config

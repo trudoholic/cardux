@@ -15,6 +15,8 @@ function Header() {
 
     const classes = gameStyles()
 
+    function is_phase(phase_id: string) { return phase_id === config.phases[state.cur_ph] }
+
     return (
         <div className={classes.header}>
             <Button
@@ -40,7 +42,7 @@ function Header() {
             <Button
                 disabled={
                     !state.game_on
-                    || 'draw' !== config.phases[state.cur_ph]
+                    || !is_phase('draw')
                     || !state.common.zones[1].cards.length
                 }
                 variant="contained"
@@ -55,7 +57,7 @@ function Header() {
             <Button
                 disabled={
                     !state.game_on
-                    || 'play' !== config.phases[state.cur_ph]
+                    || !is_phase('play')
                     || !state.sel_card_valid
                 }
                 variant="contained"
