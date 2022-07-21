@@ -26,6 +26,16 @@ function createCardInZone(state: IState, zone: IZone, id: number): ICard {
     return card
 }
 
+function selectCard(state: IState) {
+    if (phasesIdx['play'] === state.cur_ph) {
+        let hand = get_hand(state)
+        if (hand.length) {
+            state.sel_card = state.cards[hand[0].id]
+            state.sel_card_valid = true
+        }
+    }
+}
+
 const gameTableSlice = createSlice({
     name: "gameTable",
     initialState,
@@ -139,6 +149,7 @@ const gameTableSlice = createSlice({
             if (next_ph >= 0) {
                 bra_ph(next_ph)
                 state.cnt = 0
+                selectCard(state)
             }
         },
 
@@ -168,6 +179,7 @@ const gameTableSlice = createSlice({
                     keep.push(card)
                     state.cards[card.id].zone_id = 'keep'
                     state.sel_card_valid = false
+                    selectCard(state)
 
                     if (phasesIdx['play'] === state.cur_ph) state.next_cnt += 1
                 }
