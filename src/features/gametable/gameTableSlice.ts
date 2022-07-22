@@ -6,8 +6,9 @@ import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
 import {ICard, IState, IZone, initialState, getCard, getIdx} from "./Players"
 import {get_deck, get_hand, get_keep} from "./Zones"
 
-let cnt = 0
 const N = config.players.length, move_token = true
+const n_cards = 12
+let card_uid = 0
 
 const get_new_gt = (gt: number) => {
     let new_gt = gt + 1
@@ -49,7 +50,7 @@ const gameTableSlice = createSlice({
 
         add(state, action: PayloadAction<string>) {
             if (!state.game_on) return
-            const card = createCardInZone(state, state.pp[state.cur_pt].zones[0], ++cnt)
+            const card = createCardInZone(state, state.pp[state.cur_pt].zones[0], ++card_uid)
             state.sel_card = card
             console.log("%c [+]", 'color: #d33682', card.id)
         },
@@ -77,7 +78,7 @@ const gameTableSlice = createSlice({
         },
 
         begin(state) {
-            let id = 120
+            let id = n_cards
             while (id --> 0) {
                 createCardInZone(state, state.common.zones[1], id)
             }
