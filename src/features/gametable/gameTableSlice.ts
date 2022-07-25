@@ -99,14 +99,16 @@ const gameTableSlice = createSlice({
         },
 
         next(state) {
-            state.cnt += 1
-            log_m(`- ${config.phases[state.cur_ph]} : ${state.cnt} / ${config.ph_lim[state.cur_ph]}`)
-            if (state.cnt < config.ph_lim[state.cur_ph]) return
+            const b_skip = (0 >= state.ph_lim[state.cur_ph])
+            if (!b_skip) {
+                state.cnt += 1
+                log_m(`- ${config.phases[state.cur_ph]} : ${state.cnt} / ${state.ph_lim[state.cur_ph]}`)
+                if (state.cnt < state.ph_lim[state.cur_ph]) return
+            }
 
             ket_ph(state.cur_ph)
-
             const next_ph = state.cur_ph + 1
-            if (config.phases.length === next_ph) {
+            if (b_skip || config.phases.length === next_ph) {
 
                 const next_pt = (state.cur_pt + 1) % N
                 ket_pt(state.cur_pt)
@@ -141,6 +143,7 @@ const gameTableSlice = createSlice({
             const [cur_pt, next_pt] = action.payload
             if (next_pt >= 0) {
                 bra_pt(next_pt)
+                log_m('=== on start pt ===')
                 state.cur_ph = 0
             }
             else ket_pt(cur_pt)
@@ -149,9 +152,14 @@ const gameTableSlice = createSlice({
         change_ph(state, action: PayloadAction<[number, number]>) {
             const [cur_ph, next_ph] = action.payload
             if (next_ph >= 0) {
-                bra_ph(next_ph)
+                bra_ph(next_ph, state.ph_lim[next_ph])
                 state.cnt = 0
                 selectCard(state)
+
+                if (0 >= state.ph_lim[next_ph]) {
+                    log_m('- skip')
+                    state.next_cnt += 1
+                }
             }
         },
 

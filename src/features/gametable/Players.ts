@@ -21,6 +21,7 @@ export interface IState {
     next_cnt: number
     common: IPlayer
     pp: IPlayer[]
+    ph_lim: number[]
 }
 
 export const initialState: IState = {
@@ -35,7 +36,8 @@ export const initialState: IState = {
     cnt: 0,
     next_cnt: 0,
     common: getCommon('Common'),
-    pp: getPlayers(config.players)
+    pp: getPlayers(config.players),
+    ph_lim: [2,1,0,0],
 }
 
 export interface IZone {

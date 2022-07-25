@@ -22,17 +22,14 @@ function Aside() {
                 <div key={phase}>
                     <Button
                         sx={{ minWidth: "50%", m: 1/4 }}
-                        // variant="outlined"
+                        disabled={state.ph_lim[i] <= 0}
                         variant={state.cur_ph === i ? "contained" : "outlined"}
                         color="primary"
-                        // onClick={() => {
-                        //     dispatch(select(card.id))
-                        // }}
                     >
                         {
                             phase
                             + (state.cur_ph === i ? ` ${state.cnt + 1} / ` : ' ')
-                            + (config.ph_lim[i] ?? '')
+                            + (state.ph_lim[i] ?? '')
                         }
                     </Button>
                 </div>
