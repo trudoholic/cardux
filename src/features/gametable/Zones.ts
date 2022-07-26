@@ -1,10 +1,14 @@
 import {ICard, IState} from "./utils";
 
-// Common: ['play','deck','pile']
+// Common: ['play','deck','drop']
 // Player: ['hand','keep']
 
 export function get_deck(state: IState): ICard[] {
     return state.common.zones[1].cards
+}
+
+export function get_drop(state: IState): ICard[] {
+    return state.common.zones[2].cards
 }
 
 export function get_hand(state: IState): ICard[] {

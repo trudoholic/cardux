@@ -4,7 +4,7 @@ import {useAppSelector, useAppDispatch} from "../../app/hooks"
 import Button from "@mui/material/Button"
 
 import {gameStyles} from "./gameStyles"
-import {gameState, add, draw, play, remove} from "./gameTableSlice"
+import {gameState, add, draw, hand_lim, play, remove} from "./gameTableSlice"
 import config from "./config";
 
 function Header() {
@@ -67,6 +67,21 @@ function Header() {
                 }}
             >
                 PLAY
+            </Button>
+
+            <Button
+                disabled={
+                    !state.game_on
+                    || !is_phase('hl')
+                    || !state.sel_card_valid
+                }
+                variant="contained"
+                color="success"
+                onClick={() => {
+                    dispatch(hand_lim(''))
+                }}
+            >
+                HD L
             </Button>
         </div>
     )

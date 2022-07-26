@@ -4,7 +4,7 @@ import { RootState } from "../../app/store"
 import config from "./config";
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
 import {ICard, IState, IZone, initialState, getCard, getIdx} from "./utils"
-import {get_deck, get_hand, get_keep} from "./Zones"
+import {get_deck, get_drop, get_hand, get_keep} from "./Zones"
 
 const N = config.players.length, move_token = true
 const n_cards = 12
@@ -197,9 +197,30 @@ const gameTableSlice = createSlice({
             }
         },
 
+        hand_lim(state, action: PayloadAction<string>) {
+            const card = state.sel_card
+            if (card && 'hand' === card.zone_id) {
+                let hand = get_hand(state)
+                const idx = hand.findIndex(c => c.id === card.id)
+                if (idx >= 0) {
+                    hand.splice(idx, 1)
+                    const drop = get_drop(state)
+                    drop.push(card)
+                    state.cards[card.id].zone_id = 'drop'
+                    state.sel_card_valid = false
+                    selectCard(state)
+
+                    if (is_phase(state, 'hl')) state.next_cnt += 1
+                }
+            }
+        },
+
     },
 })
 
-export const { add, begin, change_gt, change_pt, change_ph, draw, end, log, next, play, remove, select } = gameTableSlice.actions
+export const {
+    add, begin, change_gt, change_pt, change_ph, draw,
+    end, hand_lim, log, next, play, remove, select
+} = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer
