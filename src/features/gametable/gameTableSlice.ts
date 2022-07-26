@@ -3,7 +3,7 @@ import { RootState } from "../../app/store"
 
 import config from "./config";
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
-import {ICard, IState, IZone, initialState, getCard, getIdx} from "./Players"
+import {ICard, IState, IZone, initialState, getCard, getIdx} from "./utils"
 import {get_deck, get_hand, get_keep} from "./Zones"
 
 const N = config.players.length, move_token = true
@@ -96,10 +96,11 @@ const gameTableSlice = createSlice({
             state.cur_pt = -1
             state.rnd_gt = -1
             state.cur_gt = -1
+            state.sel_card = null
         },
 
         next(state) {
-            const b_skip = (0 >= state.ph_lim[state.cur_ph])
+            const b_skip = (state.ph_lim[state.cur_ph] <= 0)
             if (!b_skip) {
                 state.cnt += 1
                 log_m(`- ${config.phases[state.cur_ph]} : ${state.cnt} / ${state.ph_lim[state.cur_ph]}`)
@@ -108,7 +109,7 @@ const gameTableSlice = createSlice({
 
             ket_ph(state.cur_ph)
             const next_ph = state.cur_ph + 1
-            if (b_skip || config.phases.length === next_ph) {
+            if (config.phases.length === next_ph) { // b_skip ||
 
                 const next_pt = (state.cur_pt + 1) % N
                 ket_pt(state.cur_pt)

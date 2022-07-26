@@ -39,10 +39,10 @@ export function ket_pt(pt: number) {
 export function bra_ph(ph: number, ph_lim: number) {
     console.group(`%c PH: `, 'color:' + CYAN, ph, config.phases[ph] ?? '-', ph_lim)
     // console.group(`%c PH: ${ph} ${config.phases[ph] ?? '-'}`, 'color:' + CYAN)
-    console.log(`%c <ph ${ph} ${config.phases[ph] ?? '-'}>`, 'color:' + CYAN)
+    // console.log(`%c <ph ${ph} ${config.phases[ph] ?? '-'}>`, 'color:' + CYAN)
 }
 
 export function ket_ph(ph: number) {
-    console.log(`%c </ph ${ph}>`, 'color:' + CYAN)
+    // console.log(`%c </ph ${ph}>`, 'color:' + CYAN)
     console.groupEnd()
 }

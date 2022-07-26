@@ -1,4 +1,4 @@
-import {ICard, IState} from "./Players";
+import {ICard, IState} from "./utils";
 
 // Common: ['play','deck','pile']
 // Player: ['hand','keep']

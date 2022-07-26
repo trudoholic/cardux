@@ -6,7 +6,7 @@ import LocalPoliceIcon from "@mui/icons-material/LocalPolice"
 
 import {gameStyles} from "./gameStyles"
 import {gameState, log, select} from "./gameTableSlice"
-import {IPlayer} from "./Players"
+import {IPlayer} from "./utils"
 
 export interface IPlayerProps {
     p: IPlayer
