@@ -6,6 +6,7 @@ import Button from "@mui/material/Button"
 import {gameStyles} from "./gameStyles"
 import {gameState, add, draw, hand_lim, play, remove} from "./gameTableSlice"
 import config from "./config";
+import {get_deck} from "./Zones";
 
 function Header() {
 
@@ -43,7 +44,8 @@ function Header() {
                 disabled={
                     !state.game_on
                     || !is_phase('draw')
-                    || !state.common.zones[1].cards.length
+                    // || !state.common.zones[1].cards.length
+                    || !get_deck(state).length
                 }
                 variant="contained"
                 color="success"

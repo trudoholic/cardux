@@ -3,12 +3,14 @@ import { RootState } from "../../app/store"
 
 import config from "./config";
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
-import {ICard, IState, IZone, initialState, getCard, getIdx} from "./utils"
-import {get_deck, get_drop, get_hand, get_keep} from "./Zones"
+import {ICard, IState, IZone, initialState, getCard} from "./utils"
+import {get_deck, get_drop, get_hand, get_keep, is_hand_empty} from "./Zones"
 
 const N = config.players.length, move_token = true
 const n_cards = 12
+
 let card_uid = 0
+let hand_empty = false
 
 const get_new_gt = (gt: number) => {
     let new_gt = gt + 1
@@ -101,15 +103,22 @@ const gameTableSlice = createSlice({
 
         next(state) {
             const b_skip = (state.ph_lim[state.cur_ph] <= 0)
-            if (!b_skip) {
+            if (!b_skip && !hand_empty) {
                 state.cnt += 1
                 log_m(`- ${config.phases[state.cur_ph]} : ${state.cnt} / ${state.ph_lim[state.cur_ph]}`)
+
+                // if (!is_hand_empty(state)) {
+                //     if (state.cnt < state.ph_lim[state.cur_ph]) return
+                // }
+                // else log_m('- hand empty')
+
                 if (state.cnt < state.ph_lim[state.cur_ph]) return
+                else if (is_hand_empty(state)) log_m(': hand empty')
             }
 
             ket_ph(state.cur_ph)
             const next_ph = state.cur_ph + 1
-            if (config.phases.length === next_ph) { // b_skip ||
+            if (config.phases.length === next_ph) {
 
                 const next_pt = (state.cur_pt + 1) % N
                 ket_pt(state.cur_pt)
@@ -145,6 +154,14 @@ const gameTableSlice = createSlice({
             if (next_pt >= 0) {
                 bra_pt(next_pt)
                 log_m('=== on start pt ===')
+                //
+                state.ph_lim[0] = 2
+                state.ph_lim[1] = 2
+                state.ph_lim[2] = 2
+                //
+                // state.ph_lim[0] = Math.floor(Math.random() * 3) + 1
+                // state.ph_lim[1] = Math.floor(Math.random() * 5)
+                //
                 state.cur_ph = 0
             }
             else ket_pt(cur_pt)
@@ -157,8 +174,15 @@ const gameTableSlice = createSlice({
                 state.cnt = 0
                 selectCard(state)
 
+                hand_empty = is_hand_empty(state)
+
                 if (0 >= state.ph_lim[next_ph]) {
                     log_m('- skip')
+                    state.next_cnt += 1
+                }
+
+                else if (hand_empty) {
+                    log_m('--- hand empty')
                     state.next_cnt += 1
                 }
             }
