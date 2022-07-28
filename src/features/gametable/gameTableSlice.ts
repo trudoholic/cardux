@@ -107,13 +107,10 @@ const gameTableSlice = createSlice({
                 state.cnt += 1
                 log_m(`- ${config.phases[state.cur_ph]} : ${state.cnt} / ${state.ph_lim[state.cur_ph]}`)
 
-                // if (!is_hand_empty(state)) {
-                //     if (state.cnt < state.ph_lim[state.cur_ph]) return
-                // }
-                // else log_m('- hand empty')
-
-                if (state.cnt < state.ph_lim[state.cur_ph]) return
-                else if (is_hand_empty(state)) log_m(': hand empty')
+                if (state.cnt < state.ph_lim[state.cur_ph]) {
+                    if (is_hand_empty(state)) log_m('- hand empty')
+                    else return // next imp
+                }
             }
 
             ket_ph(state.cur_ph)
@@ -155,12 +152,12 @@ const gameTableSlice = createSlice({
                 bra_pt(next_pt)
                 log_m('=== on start pt ===')
                 //
-                state.ph_lim[0] = 2
-                state.ph_lim[1] = 2
-                state.ph_lim[2] = 2
+                // state.ph_lim[0] = 1
+                // state.ph_lim[1] = 2
+                // state.ph_lim[2] = 2
                 //
-                // state.ph_lim[0] = Math.floor(Math.random() * 3) + 1
-                // state.ph_lim[1] = Math.floor(Math.random() * 5)
+                state.ph_lim[0] = Math.floor(Math.random() * 3) + 1
+                state.ph_lim[1] = Math.floor(Math.random() * 5)
                 //
                 state.cur_ph = 0
             }
@@ -182,7 +179,7 @@ const gameTableSlice = createSlice({
                 }
 
                 else if (hand_empty) {
-                    log_m('--- hand empty')
+                    log_m('- hand empty')
                     state.next_cnt += 1
                 }
             }
