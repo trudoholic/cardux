@@ -4,7 +4,7 @@ import { RootState } from "../../app/store"
 import config from "./config";
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
 import {ICard, IState, IZone, initialState, getCard} from "./utils"
-import {get_deck, get_drop, get_hand, get_keep, is_hand_empty} from "./Zones"
+import {get_deck, get_drop, get_hand, get_keep, get_limits, is_hand_empty} from "./Zones"
 
 const N = config.players.length, move_token = true
 const n_cards = 12
@@ -99,6 +99,7 @@ const gameTableSlice = createSlice({
             state.rnd_gt = -1
             state.cur_gt = -1
             state.sel_card = null
+            state.ph_lim = []
         },
 
         next(state) {
@@ -109,7 +110,7 @@ const gameTableSlice = createSlice({
 
                 if (state.cnt < state.ph_lim[state.cur_ph]) {
                     if (is_hand_empty(state)) log_m('- hand empty')
-                    else return // next imp
+                    else return // (next imp)
                 }
             }
 
@@ -151,14 +152,7 @@ const gameTableSlice = createSlice({
             if (next_pt >= 0) {
                 bra_pt(next_pt)
                 log_m('=== on start pt ===')
-                //
-                // state.ph_lim[0] = 1
-                // state.ph_lim[1] = 2
-                // state.ph_lim[2] = 2
-                //
-                state.ph_lim[0] = Math.floor(Math.random() * 3) + 1
-                state.ph_lim[1] = Math.floor(Math.random() * 5)
-                //
+                state.ph_lim = [...get_limits(state)]
                 state.cur_ph = 0
             }
             else ket_pt(cur_pt)

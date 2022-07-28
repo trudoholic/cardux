@@ -37,7 +37,7 @@ export const initialState: IState = {
     next_cnt: 0,
     common: getCommon('Common'),
     pp: getPlayers(config.players),
-    ph_lim: [2,1,1,0],
+    ph_lim: [],
 }
 
 export interface IZone {

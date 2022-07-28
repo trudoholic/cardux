@@ -25,3 +25,8 @@ export function is_hand_empty(state: IState): boolean {
     // return is_phase(state, 'play') && !get_hand(state).length
     return (is_phase(state, 'play') || is_phase(state, 'hl')) && !get_hand(state).length
 }
+
+export function get_limits(state: IState): number[] {
+    const RND = true, K = 3, L = 1
+    return config.ph_lim.map((it, i) => it < 0 ? 0 : RND ? Math.floor(Math.random() * K) + L : it)
+}
