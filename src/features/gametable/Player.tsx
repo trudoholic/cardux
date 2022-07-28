@@ -40,7 +40,7 @@ function Player(props: IPlayerProps) {
                 {p.zones.map(z => (
                     <div key={z.id} className={classes.zone}>
                         <details open>
-                            <summary>{z.id + (z.cards.length? ' (' + z.cards.length + ')': '')}</summary>
+                            <summary><b>{z.id + (z.cards.length? ' (' + z.cards.length + ')': '')}</b></summary>
                             {z.cards.map(card => (
                                 <div key={card.id}>
                                     <Button
