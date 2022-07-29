@@ -4,7 +4,7 @@ import {useAppSelector, useAppDispatch} from "../../app/hooks"
 import Button from "@mui/material/Button"
 
 import {gameStyles} from "./gameStyles"
-import {gameState, add, draw, hand_lim, keep_lim, play, remove} from "./gameTableSlice"
+import {gameState, add, draw, play, remove, zone_lim} from "./gameTableSlice"
 import config from "./config";
 import {get_deck} from "./Zones";
 
@@ -80,7 +80,7 @@ function Header() {
                 variant="contained"
                 color="success"
                 onClick={() => {
-                    dispatch(hand_lim(''))
+                    dispatch(zone_lim('hand'))
                 }}
             >
                 HD L
@@ -95,7 +95,7 @@ function Header() {
                 variant="contained"
                 color="success"
                 onClick={() => {
-                    dispatch(keep_lim(''))
+                    dispatch(zone_lim('keep'))
                 }}
             >
                 KP L

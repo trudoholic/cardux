@@ -212,10 +212,11 @@ const gameTableSlice = createSlice({
             }
         },
 
-        hand_lim(state, action: PayloadAction<string>) {
+        zone_lim(state, action: PayloadAction<string>) {
+            const id = action.payload
             const card = state.sel_card
-            if (card && 'hand' === card.zone_id) {
-                let src = get_hand(state)
+            if (card && id === card.zone_id) {
+                let src = get_src(state)
                 const idx = src.findIndex(c => c.id === card.id)
                 if (idx >= 0) {
                     src.splice(idx, 1)
@@ -224,27 +225,6 @@ const gameTableSlice = createSlice({
                     state.cards[card.id].zone_id = 'drop'
                     state.sel_card_valid = false
                     selectCard(state)
-
-                    // if (is_phase(state, 'hl')) state.next_cnt += 1
-                    state.next_cnt += 1
-                }
-            }
-        },
-
-        keep_lim(state, action: PayloadAction<string>) {
-            const card = state.sel_card
-            if (card && 'keep' === card.zone_id) {
-                let src = get_keep(state)
-                const idx = src.findIndex(c => c.id === card.id)
-                if (idx >= 0) {
-                    src.splice(idx, 1)
-                    const dst = get_drop(state)
-                    dst.push(card)
-                    state.cards[card.id].zone_id = 'drop'
-                    state.sel_card_valid = false
-                    selectCard(state)
-
-                    // if (is_phase(state, 'kl')) state.next_cnt += 1
                     state.next_cnt += 1
                 }
             }
@@ -255,7 +235,7 @@ const gameTableSlice = createSlice({
 
 export const {
     add, begin, change_gt, change_pt, change_ph, draw,
-    end, hand_lim, keep_lim, log, next, play, remove, select
+    end, log, next, play, remove, select, zone_lim
 } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer
