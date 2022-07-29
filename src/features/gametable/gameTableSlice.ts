@@ -4,13 +4,13 @@ import { RootState } from "../../app/store"
 import config from "./config";
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
 import {ICard, IState, IZone, initialState, getCard} from "./utils"
-import {get_deck, get_drop, get_hand, get_keep, get_limits, is_hand_empty} from "./Zones"
+import {get_deck, get_drop, get_hand, get_keep, get_limits, get_src, is_src_empty} from "./Zones"
 
 const N = config.players.length, move_token = true
 const n_cards = 12
 
 let card_uid = 0
-let hand_empty = false
+let src_empty = false
 
 const get_new_gt = (gt: number) => {
     let new_gt = gt + 1
@@ -29,10 +29,10 @@ function createCardInZone(state: IState, zone: IZone, id: number): ICard {
 }
 
 function selectCard(state: IState) {
-    if (is_phase(state, 'play')) {
-        let hand = get_hand(state)
-        if (hand.length) {
-            state.sel_card = state.cards[hand[0].id]
+    if (state.cur_ph) {
+        let src = get_src(state)
+        if (src.length) {
+            state.sel_card = state.cards[src[0].id]
             state.sel_card_valid = true
         }
     }
@@ -75,7 +75,7 @@ const gameTableSlice = createSlice({
             state.sel_card = state.cards[id] ?? null
             state.sel_card_valid = state.sel_card
                 && state.sel_card.player_id === 'p' + state.cur_pt
-                && state.sel_card.zone_id === 'hand'
+                && state.sel_card.zone_id === config.phase_zone[state.cur_ph]
             // console.log("%c [card]", 'color: #d33682', id, state.sel_card?.player_id, state.sel_card?.zone_id)
         },
 
@@ -104,12 +104,12 @@ const gameTableSlice = createSlice({
 
         next(state) {
             const b_skip = (state.ph_lim[state.cur_ph] <= 0)
-            if (!b_skip && !hand_empty) {
+            if (!b_skip && !src_empty) {
                 state.cnt += 1
                 log_m(`- ${config.phases[state.cur_ph]} : ${state.cnt} / ${state.ph_lim[state.cur_ph]}`)
 
                 if (state.cnt < state.ph_lim[state.cur_ph]) {
-                    if (is_hand_empty(state)) log_m('- hand empty')
+                    if (is_src_empty(state)) log_m('- src empty')
                     else return // (next imp)
                 }
             }
@@ -165,15 +165,15 @@ const gameTableSlice = createSlice({
                 state.cnt = 0
                 selectCard(state)
 
-                hand_empty = is_hand_empty(state)
+                src_empty = is_src_empty(state)
 
                 if (0 >= state.ph_lim[next_ph]) {
                     log_m('- skip')
                     state.next_cnt += 1
                 }
 
-                else if (hand_empty) {
-                    log_m('- hand empty')
+                else if (src_empty) {
+                    log_m('-- src empty')
                     state.next_cnt += 1
                 }
             }
@@ -215,17 +215,37 @@ const gameTableSlice = createSlice({
         hand_lim(state, action: PayloadAction<string>) {
             const card = state.sel_card
             if (card && 'hand' === card.zone_id) {
-                let hand = get_hand(state)
-                const idx = hand.findIndex(c => c.id === card.id)
+                let src = get_hand(state)
+                const idx = src.findIndex(c => c.id === card.id)
                 if (idx >= 0) {
-                    hand.splice(idx, 1)
-                    const drop = get_drop(state)
-                    drop.push(card)
+                    src.splice(idx, 1)
+                    const dst = get_drop(state)
+                    dst.push(card)
                     state.cards[card.id].zone_id = 'drop'
                     state.sel_card_valid = false
                     selectCard(state)
 
-                    if (is_phase(state, 'hl')) state.next_cnt += 1
+                    // if (is_phase(state, 'hl')) state.next_cnt += 1
+                    state.next_cnt += 1
+                }
+            }
+        },
+
+        keep_lim(state, action: PayloadAction<string>) {
+            const card = state.sel_card
+            if (card && 'keep' === card.zone_id) {
+                let src = get_keep(state)
+                const idx = src.findIndex(c => c.id === card.id)
+                if (idx >= 0) {
+                    src.splice(idx, 1)
+                    const dst = get_drop(state)
+                    dst.push(card)
+                    state.cards[card.id].zone_id = 'drop'
+                    state.sel_card_valid = false
+                    selectCard(state)
+
+                    // if (is_phase(state, 'kl')) state.next_cnt += 1
+                    state.next_cnt += 1
                 }
             }
         },
@@ -235,7 +255,7 @@ const gameTableSlice = createSlice({
 
 export const {
     add, begin, change_gt, change_pt, change_ph, draw,
-    end, hand_lim, log, next, play, remove, select
+    end, hand_lim, keep_lim, log, next, play, remove, select
 } = gameTableSlice.actions
 export const gameState = (state: RootState) => state.gameTable
 export default gameTableSlice.reducer

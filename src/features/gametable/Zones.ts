@@ -20,8 +20,16 @@ export function get_keep(state: IState): ICard[] {
     return state.pp[state.cur_pt].zones[1].cards
 }
 
+export function get_src(state: IState): ICard[] {
+    const idx = config.player_zones.findIndex(it => it === config.phase_zone[state.cur_ph])
+    if (idx >= 0) {
+        return state.pp[state.cur_pt].zones[idx].cards
+    }
+    return []
+}
+
 function is_phase(state: IState, phase_id: string) { return phase_id === config.phases[state.cur_ph] }
-export function is_hand_empty(state: IState): boolean {
+export function is_src_empty(state: IState): boolean {
     // return is_phase(state, 'play') && !get_hand(state).length
     return (is_phase(state, 'play') || is_phase(state, 'hl')) && !get_hand(state).length
 }
