@@ -183,6 +183,17 @@ const gameTableSlice = createSlice({
             const deck = get_deck(state)
             if (deck.length) {
                 const card = deck.pop()
+
+                if (!deck.length) {
+                    const drop = get_drop(state)
+                    if (drop.length) {
+                        log_m('-- shuffle')
+                        const tmp = state.common.zones[2].cards.splice(0, drop.length)
+                        state.common.zones[1].cards = tmp
+                    }
+                    else log_m('-- game over')
+                }
+
                 if (card) {
                     const hand = get_hand(state)
                     hand.push(card)
