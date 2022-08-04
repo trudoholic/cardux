@@ -43,10 +43,10 @@ function Aside() {
                     variant="outlined"
                     color="primary"
                     onClick={() => {
-                        dispatch(log(state.sel_card?.id ?? ''))
+                        dispatch(log(state.sel_card?.description ?? ''))
                     }}
                 >
-                    {state.sel_card.id}
+                    {state.sel_card.description}
                 </Button>
             }
         </div>

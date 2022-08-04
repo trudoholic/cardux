@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
-import config from "./config";
+import cards from "./cards"
+import config from "./config"
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
-import {ICard, IState, IZone, initialState, getCard} from "./utils"
+import {ICard, IState, IZone, initialState, getDeckCard} from "./utils"
 import {get_deck, get_drop, get_hand, get_keep, get_limits, get_src, is_src_empty} from "./Zones"
 
 const N = config.players.length, move_token = true
-const n_cards = 12
+// const n_cards = 12
 
 let card_uid = 0
 let src_empty = false
@@ -21,7 +22,8 @@ const get_new_gt = (gt: number) => {
 }
 
 function createCardInZone(state: IState, zone: IZone, id: number): ICard {
-    const card = getCard('' + id)
+    // const card = getCard('' + id)
+    const card = getDeckCard(id)
     state.cards['' + id] = card
     zone.cards.push(card)
     card.zone_id = zone.id
@@ -80,7 +82,8 @@ const gameTableSlice = createSlice({
         },
 
         begin(state) {
-            let id = n_cards
+            // let id = n_cards
+            let id = cards.length
             while (id --> 0) {
                 createCardInZone(state, state.common.zones[1], id)
             }

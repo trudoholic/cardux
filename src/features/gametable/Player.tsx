@@ -51,7 +51,7 @@ function Player(props: IPlayerProps) {
                                             dispatch(select(card.id))
                                         }}
                                     >
-                                        {card.id}
+                                        {card.description}
                                     </Button>
                                 </div>
                             ))}

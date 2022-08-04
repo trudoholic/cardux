@@ -1,12 +1,20 @@
-import config from "./config";
+import cards, {getDescription} from "./cards"
+import config from "./config"
 
-export interface ICard {
-    id: string
+type DeckCard = typeof cards[number]
+export interface ICard extends DeckCard { //IDeckCard
     description: string
-    flag: boolean
     player_id: string
     zone_id: string
 }
+
+/*export interface ICard {
+    id: string
+    description: string
+    // flag: boolean
+    player_id: string
+    zone_id: string
+}*/
 
 export interface IState {
     game_on: boolean
@@ -50,11 +58,22 @@ export interface IPlayer {
     zones: IZone[]
 }
 
-export function getCard(id: string): ICard {
+/*export function getCard(id: string): ICard {
     return {
         id,
         description: 'Card: ' + id,
-        flag: false,
+        // flag: false,
+        player_id: '',
+        zone_id: ''
+    }
+}*/
+
+export function getDeckCard(id: number): ICard { //(deck_card: DeckCard): IDeckCard
+    const deck_card = cards[id]
+    return {
+        ...deck_card,
+        // description: 'Card: ' + deck_card.id,
+        description: getDescription(id),
         player_id: '',
         zone_id: ''
     }

@@ -13,6 +13,15 @@ enum RuleType {
 }
 
 export function typeToStr(t: CardType) { return CardType[t] }
+export function getDescription(id: number) {
+    const card = raw_cards[id]
+    let d = CardType[card.type]
+    if (CardType[CardType.Rule] === d) {
+        const subtype = card.subtype
+        if (subtype) d = RuleType[subtype]
+    }
+    return d + ' ' + card.value
+}
 
 export interface IRawCard {
     type: CardType
@@ -55,5 +64,5 @@ const raw_cards: IRawCard[] = [
     { type: CardType.Goal, value: 9, },
 ]
 
-const cards = raw_cards.map((it, i) => ({ id: i, ...it}))
+const cards = raw_cards.map((it, i) => ({ id: '' + i, ...it}))
 export default cards
