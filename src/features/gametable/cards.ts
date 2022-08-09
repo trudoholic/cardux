@@ -7,8 +7,8 @@ enum CardType {
 
 enum RuleType {
     Draw = 1,
-    Hand,
-    Keep,
+    HLim,
+    KLim,
     Play,
 }
 
@@ -33,12 +33,12 @@ const raw_cards: IRawCard[] = [
     { type: CardType.Rule, subtype: RuleType.Draw, value: 2, },
     { type: CardType.Rule, subtype: RuleType.Draw, value: 3, },
     { type: CardType.Rule, subtype: RuleType.Draw, value: 4, },
-    { type: CardType.Rule, subtype: RuleType.Hand, value: 2, },
-    { type: CardType.Rule, subtype: RuleType.Hand, value: 3, },
-    { type: CardType.Rule, subtype: RuleType.Hand, value: 4, },
-    { type: CardType.Rule, subtype: RuleType.Keep, value: 2, },
-    { type: CardType.Rule, subtype: RuleType.Keep, value: 3, },
-    { type: CardType.Rule, subtype: RuleType.Keep, value: 4, },
+    { type: CardType.Rule, subtype: RuleType.HLim, value: 2, },
+    { type: CardType.Rule, subtype: RuleType.HLim, value: 3, },
+    { type: CardType.Rule, subtype: RuleType.HLim, value: 4, },
+    { type: CardType.Rule, subtype: RuleType.KLim, value: 2, },
+    { type: CardType.Rule, subtype: RuleType.KLim, value: 3, },
+    { type: CardType.Rule, subtype: RuleType.KLim, value: 4, },
     { type: CardType.Rule, subtype: RuleType.Play, value: 2, },
     { type: CardType.Rule, subtype: RuleType.Play, value: 3, },
     { type: CardType.Rule, subtype: RuleType.Play, value: 4, },
