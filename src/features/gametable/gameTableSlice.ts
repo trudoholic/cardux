@@ -53,10 +53,17 @@ const gameTableSlice = createSlice({
         },
 
         add(state, action: PayloadAction<string>) {
+            //
+            enum RGB { Red = 1, Green, Blue,}
+            const xyz = RGB
+            const rgb_list = Object.keys(xyz).filter(k => isNaN(+k))//.length
+            console.log("%c [+]", 'color: #d33682', rgb_list)
+            /*/
             if (!state.game_on) return
             const card = createCardInZone(state, state.pp[state.cur_pt].zones[0], ++card_uid)
             state.sel_card = card
             console.log("%c [+]", 'color: #d33682', card.id)
+            /*/
         },
 
         remove(state, action: PayloadAction<string>) {
