@@ -82,10 +82,18 @@ const gameTableSlice = createSlice({
         },
 
         begin(state) {
+            const src = Array.from(Array(cards.length), (_,i) => i)
+            const dst = []
+            while (src.length) {
+                // dst.push(src.shift())
+                dst.push(src.splice(Math.floor(Math.random() * src.length), 1)[0])
+            }
+            // console.log("%c [dst]", 'color: #d33682', dst.length, dst)
+
             // let id = n_cards
             let id = cards.length
             while (id --> 0) {
-                createCardInZone(state, state.common.zones[1], id)
+                createCardInZone(state, state.common.zones[1], dst[id]!)
             }
 
             state.game_on = true
@@ -185,7 +193,7 @@ const gameTableSlice = createSlice({
         draw(state, action: PayloadAction<string>) {
             const deck = get_deck(state)
             if (deck.length) {
-                const card = deck.pop()
+                const card = deck.shift()
 
                 if (!deck.length) {
                     const drop = get_drop(state)
