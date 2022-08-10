@@ -7,23 +7,12 @@ import LocalPoliceIcon from "@mui/icons-material/LocalPolice"
 import {gameStyles} from "./gameStyles"
 import {gameState, log, select} from "./gameTableSlice"
 import {IPlayer} from "./utils"
-
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { blue, green, red, yellow } from "@mui/material/colors"
+import GameCard from "./GameCard";
 
 export interface IPlayerProps {
     p: IPlayer
     pi: number
 }
-
-const theme = createTheme({
-    palette: {
-        error: red,
-        info: blue,
-        success: green,
-        warning: yellow,
-    }
-})
 
 function Player(props: IPlayerProps) {
 
@@ -55,21 +44,10 @@ function Player(props: IPlayerProps) {
                             <summary><b>{z.id + (z.cards.length? ' (' + z.cards.length + ')': '')}</b></summary>
                             {z.cards.map(card => (
                                 <div key={card.id}>
-                                    <ThemeProvider theme={theme}>
-                                        <Button
-                                            sx={{ m: 1/4 }}
-                                            variant="outlined"
-                                            color={card.type === 1 ? "error"
-                                                : card.type === 2 ? "success"
-                                                : card.type === 3 ? "primary"
-                                                : "secondary"}
-                                            onClick={() => {
-                                                dispatch(select(card.id))
-                                            }}
-                                        >
-                                            {card.description}
-                                        </Button>
-                                    </ThemeProvider>
+                                    <GameCard
+                                        card={card}
+                                        onClick={() => {dispatch(select(card.id))}}
+                                    />
                                 </div>
                             ))}
 
