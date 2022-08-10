@@ -59,7 +59,10 @@ function Player(props: IPlayerProps) {
                                         <Button
                                             sx={{ m: 1/4 }}
                                             variant="outlined"
-                                            color={card.type === 2 ? "success" : "info"}
+                                            color={card.type === 1 ? "error"
+                                                : card.type === 2 ? "success"
+                                                : card.type === 3 ? "primary"
+                                                : "secondary"}
                                             onClick={() => {
                                                 dispatch(select(card.id))
                                             }}
