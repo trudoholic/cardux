@@ -7,6 +7,7 @@ import Button from "@mui/material/Button"
 import {gameStyles} from "./gameStyles"
 import {gameState, log, select} from "./gameTableSlice"
 import config from "./config";
+import GameCard from "./GameCard";
 
 function Aside() {
 
@@ -38,16 +39,10 @@ function Aside() {
             {/*<Divider sx={{borderBottomWidth: 2, width:'50%', m: 1}} />*/}
 
             {state.sel_card &&
-                <Button
-                    sx={{ width: 8, m: 1/4 }}
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => {
-                        dispatch(log(state.sel_card?.description ?? ''))
-                    }}
-                >
-                    {state.sel_card.description}
-                </Button>
+                <GameCard
+                    card={state.sel_card}
+                    onClick={() => {dispatch(log(state.sel_card?.description ?? ''))}}
+                />
             }
         </div>
     )
