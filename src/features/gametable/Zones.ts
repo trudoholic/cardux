@@ -1,23 +1,20 @@
-import {ICard, IState} from "./utils";
-import config from "./config";
-
-// === Common: ['play','deck','drop']
-// === Player: ['hand','keep']
+import {ICard, IState} from "./utils"
+import config, {CommonZone, PlayerZone} from "./config"
 
 export function get_deck(state: IState): ICard[] {
-    return state.common.zones[1].cards
+    return state.common.zones[CommonZone.deck].cards
 }
 
 export function get_drop(state: IState): ICard[] {
-    return state.common.zones[2].cards
+    return state.common.zones[CommonZone.drop].cards
 }
 
 export function get_hand(state: IState): ICard[] {
-    return state.pp[state.cur_pt].zones[0].cards
+    return state.pp[state.cur_pt].zones[PlayerZone.hand].cards
 }
 
 export function get_keep(state: IState): ICard[] {
-    return state.pp[state.cur_pt].zones[1].cards
+    return state.pp[state.cur_pt].zones[PlayerZone.keep].cards
 }
 
 export function get_src(state: IState): ICard[] {
