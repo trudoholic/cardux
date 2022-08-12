@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
-import cards from "./cards"
+import cards, {CardType} from "./cards"
 import config, {CommonZone, PlayerZone} from "./config"
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
 import {ICard, IState, IZone, initialState, getDeckCard} from "./utils"
-import {get_deck, get_drop, get_hand, get_keep, get_limits, get_src, is_src_empty} from "./Zones"
+import {get_deck, get_drop, get_hand, get_keep, get_limits, get_rule, get_src, is_src_empty} from "./Zones"
 
 const N = config.players.length, move_token = true
 // const n_cards = 12
@@ -230,9 +230,16 @@ const gameTableSlice = createSlice({
                 const idx = hand.findIndex(c => c.id === card.id)
                 if (idx >= 0) {
                     hand.splice(idx, 1)
-                    const keep = get_keep(state)
-                    keep.push(card)
-                    state.cards[card.id].zone_id = 'keep'
+
+                    if (CardType.Rule === card.type) {
+                        get_rule(state).push(card)
+                        state.cards[card.id].zone_id = 'rule'
+                    }
+                    else {
+                        get_keep(state).push(card)
+                        state.cards[card.id].zone_id = 'keep'
+                    }
+
                     state.sel_card_valid = false
                     selectCard(state)
 

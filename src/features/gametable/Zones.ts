@@ -9,6 +9,10 @@ export function get_drop(state: IState): ICard[] {
     return state.common.zones[CommonZone.drop].cards
 }
 
+export function get_rule(state: IState): ICard[] {
+    return state.common.zones[CommonZone.rule].cards
+}
+
 export function get_hand(state: IState): ICard[] {
     return state.pp[state.cur_pt].zones[PlayerZone.hand].cards
 }

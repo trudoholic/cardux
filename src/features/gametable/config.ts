@@ -1,4 +1,5 @@
 export enum CommonZone {
+    rule,
     play,
     deck,
     drop,
