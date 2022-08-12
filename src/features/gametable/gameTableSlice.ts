@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../../app/store"
 
 import cards from "./cards"
-import config from "./config"
+import config, {CommonZone, PlayerZone} from "./config"
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
 import {ICard, IState, IZone, initialState, getDeckCard} from "./utils"
 import {get_deck, get_drop, get_hand, get_keep, get_limits, get_src, is_src_empty} from "./Zones"
@@ -53,22 +53,22 @@ const gameTableSlice = createSlice({
         },
 
         add(state, action: PayloadAction<string>) {
-            //
+            /*/
             enum RGB { Red = 1, Green, Blue,}
             const xyz = RGB
             const rgb_list = Object.keys(xyz).filter(k => isNaN(+k))//.length
             console.log("%c [+]", 'color: #d33682', rgb_list)
             /*/
             if (!state.game_on) return
-            const card = createCardInZone(state, state.pp[state.cur_pt].zones[0], ++card_uid)
+            const card = createCardInZone(state, state.pp[state.cur_pt].zones[PlayerZone.hand], ++card_uid)
             state.sel_card = card
             console.log("%c [+]", 'color: #d33682', card.id)
-            /*/
+            //
         },
 
         remove(state, action: PayloadAction<string>) {
             if (!state.game_on) return
-            const cards = state.pp[state.cur_pt].zones[0].cards
+            const cards = get_hand(state)
             if (cards.length) {
                 const card = cards.pop() as {id: string}
                 state.sel_card = cards[cards.length - 1]
@@ -100,7 +100,7 @@ const gameTableSlice = createSlice({
             // let id = n_cards
             let id = cards.length
             while (id --> 0) {
-                createCardInZone(state, state.common.zones[1], dst[id]!)
+                createCardInZone(state, state.common.zones[CommonZone.deck], dst[id]!)
             }
 
             state.game_on = true
@@ -206,8 +206,8 @@ const gameTableSlice = createSlice({
                     const drop = get_drop(state)
                     if (drop.length) {
                         log_m('-- shuffle')
-                        const tmp = state.common.zones[2].cards.splice(0, drop.length)
-                        state.common.zones[1].cards = tmp
+                        const tmp = state.common.zones[CommonZone.drop].cards.splice(0, drop.length)
+                        state.common.zones[CommonZone.deck].cards = tmp
                     }
                     else log_m('-- game over')
                 }
