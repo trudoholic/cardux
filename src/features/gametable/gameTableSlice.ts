@@ -232,6 +232,14 @@ const gameTableSlice = createSlice({
                     hand.splice(idx, 1)
 
                     if (CardType.Rule === card.type) {
+
+                        const asd = get_rule(state).filter(it => it.subtype === card.subtype)
+                        asd.forEach(it => {
+                            it.zone_id = 'drop'
+                            get_drop(state).push(it)
+                        })
+                        state.common.zones[CommonZone.rule].cards = get_rule(state).filter(it => it.subtype !== card.subtype)
+
                         get_rule(state).push(card)
                         state.cards[card.id].zone_id = 'rule'
                     }
