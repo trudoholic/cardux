@@ -1,5 +1,6 @@
 import {ICard, IState} from "./utils"
 import config, {CommonZone, PlayerZone} from "./config"
+import {RuleType} from "./cards"
 
 export function get_deck(state: IState): ICard[] {
     return state.common.zones[CommonZone.deck].cards
@@ -34,6 +35,15 @@ export function is_src_empty(state: IState): boolean {
 }
 
 export function get_limits(state: IState): number[] {
-    const RND = true, K = 3, L = 1
-    return config.ph_lim.map((it, i) => it < 0 ? 0 : RND ? Math.floor(Math.random() * K) + L : it)
+    const RND = false, K = 3, L = 1
+    // return config.ph_lim.map((it, i) => it < 0 ? 0 : RND ? Math.floor(Math.random() * K) + L : it)
+    //
+    const rules = get_rule(state)
+    const LMS0 = [RuleType.Draw, RuleType.Play, RuleType.HLim, RuleType.KLim]
+        .map((ruleType, i) => rules.find(it => ruleType === it.subtype)?.value)
+    //
+    const LMS = config.ph_lim.map((it, i) => it < 0 ? 0 : RND ? Math.floor(Math.random() * K) + L : it)
+    // console.log("%c [on start pt]", 'color: #ff00ff', LMS)
+    console.log("%c [on start pt]", 'color: #ff00ff', LMS0)
+    return LMS
 }

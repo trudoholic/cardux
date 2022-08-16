@@ -18,7 +18,7 @@ const config = {
     player_zones: enumToArray(PlayerZone),
     common_zones: enumToArray(CommonZone),
     phases: ['draw','play','hl','kl'],
-    ph_lim: [2,1,1,1],
+    ph_lim: [2,1,-1,-1],
     phase_zone: ['','hand','hand','keep']
 }
 

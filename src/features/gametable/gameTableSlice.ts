@@ -169,7 +169,7 @@ const gameTableSlice = createSlice({
             const [cur_pt, next_pt] = action.payload
             if (next_pt >= 0) {
                 bra_pt(next_pt)
-                log_m('=== on start pt ===')
+                // log_m('=== on start pt ===')
                 state.ph_lim = [...get_limits(state)]
                 state.cur_ph = 0
             }
@@ -233,8 +233,8 @@ const gameTableSlice = createSlice({
 
                     if (CardType.Rule === card.type) {
 
-                        const asd = get_rule(state).filter(it => it.subtype === card.subtype)
-                        asd.forEach(it => {
+                        const drop = get_rule(state).filter(it => it.subtype === card.subtype)
+                        drop.forEach(it => {
                             it.zone_id = 'drop'
                             get_drop(state).push(it)
                         })
