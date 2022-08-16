@@ -36,14 +36,13 @@ export function is_src_empty(state: IState): boolean {
 
 export function get_limits(state: IState): number[] {
     const RND = false, K = 3, L = 1
-    // return config.ph_lim.map((it, i) => it < 0 ? 0 : RND ? Math.floor(Math.random() * K) + L : it)
-    //
     const rules = get_rule(state)
     const LMS0 = [RuleType.Draw, RuleType.Play, RuleType.HLim, RuleType.KLim]
         .map((ruleType, i) => rules.find(it => ruleType === it.subtype)?.value)
-    //
-    const LMS = config.ph_lim.map((it, i) => it < 0 ? 0 : RND ? Math.floor(Math.random() * K) + L : it)
+    const LMS = config.ph_lim.map((it, i) =>
+        LMS0[i] ?? (it < 0 ? 0 : RND ? Math.floor(Math.random() * K) + L : it)
+    )
+    // console.log("%c [-----------]", 'color: #ff00ff', LMS0)
     // console.log("%c [on start pt]", 'color: #ff00ff', LMS)
-    console.log("%c [on start pt]", 'color: #ff00ff', LMS0)
     return LMS
 }
