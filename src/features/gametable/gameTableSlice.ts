@@ -172,7 +172,6 @@ const gameTableSlice = createSlice({
             if (next_pt >= 0) {
                 bra_pt(next_pt)
                 // log_m('=== on start pt ===')
-                state.ph_lim = [...get_limits(state)]
                 state.cur_ph = 0
             }
             else ket_pt(cur_pt)
@@ -181,6 +180,7 @@ const gameTableSlice = createSlice({
         change_ph(state, action: PayloadAction<[number, number]>) {
             const [cur_ph, next_ph] = action.payload
             if (next_ph >= 0) {
+                state.ph_lim = [...get_limits(state)]
                 bra_ph(next_ph, state.ph_lim[next_ph])
                 state.cnt = 0
                 selectCard(state)
