@@ -5,7 +5,7 @@ import cards, {CardType} from "./cards"
 import config, {CommonZone, PlayerZone} from "./config"
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
 import {ICard, IState, IZone, initialState, getDeckCard} from "./utils"
-import {get_deck, get_drop, get_goal, get_hand, get_keep, get_limits, get_rule, get_src, is_src_empty} from "./Zones"
+import {get_crib, get_deck, get_drop, get_goal, get_hand, get_keep, get_limits, get_rule, get_src, is_src_empty} from "./Zones"
 
 const N = config.players.length, move_token = true
 // const n_cards = 12
@@ -218,12 +218,21 @@ const gameTableSlice = createSlice({
                 }
 
                 if (card) {
-                    const hand = get_hand(state)
-                    hand.push(card)
-                    state.cards[card.id].player_id = 'p' + state.cur_pt
-                    state.cards[card.id].zone_id = 'hand'
+                    if (CardType.Bane === card.type) {
+                    // if (CardType.Keep !== card.type) {
+                        const crib = get_crib(state)
+                        crib.push(card)
+                        state.cards[card.id].player_id = 'p' + state.cur_pt
+                        state.cards[card.id].zone_id = 'crib'
+                    }
+                    else {
+                        const hand = get_hand(state)
+                        hand.push(card)
+                        state.cards[card.id].player_id = 'p' + state.cur_pt
+                        state.cards[card.id].zone_id = 'hand'
 
-                    if (is_phase(state, 'draw')) state.next_cnt += 1
+                        if (is_phase(state, 'draw')) state.next_cnt += 1
+                    }
                 }
             }
             else {

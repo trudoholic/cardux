@@ -22,6 +22,10 @@ export function get_hand(state: IState): ICard[] {
     return state.pp[state.cur_pt].zones[PlayerZone.hand].cards
 }
 
+export function get_crib(state: IState): ICard[] {
+    return state.pp[state.cur_pt].zones[PlayerZone.crib].cards
+}
+
 export function get_keep(state: IState): ICard[] {
     return state.pp[state.cur_pt].zones[PlayerZone.keep].cards
 }
