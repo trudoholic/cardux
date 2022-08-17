@@ -35,7 +35,7 @@ function Player(props: IPlayerProps) {
                     dispatch(select(''))
                 }}
             >
-                {p.id}
+                {p.id + ' ' + (p.idx < 0? '': p.idx)}
             </Button>
             <div>
                 {p.zones.map(z => (

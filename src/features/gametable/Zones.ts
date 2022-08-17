@@ -40,9 +40,16 @@ export function get_limits(state: IState): number[] {
     const LMS0 = [RuleType.Draw, RuleType.Play, RuleType.HLim, RuleType.KLim]
         .map((ruleType, i) => rules.find(it => ruleType === it.subtype)?.value)
     const LMS = config.ph_lim.map((it, i) =>
-        LMS0[i] ?? (it < 0 ? 0 : RND ? Math.floor(Math.random() * K) + L : it)
+        // LMS0[i] ?? (it < 0 ? 0 : RND ? Math.floor(Math.random() * K) + L : it)
+        LMS0[i] ?? (RND ? Math.floor(Math.random() * K) + L : it)
     )
-    // console.log("%c [-----------]", 'color: #ff00ff', LMS0)
-    // console.log("%c [on start pt]", 'color: #ff00ff', LMS)
+    // const hand_length = get_hand(state).length
+    // LMS[2] = (LMS[2] < 0 || hand_length < LMS[2]) ? 0 : hand_length - LMS[2]
+    // const keep_length = get_keep(state).length
+    // LMS[3] = (LMS[3] < 0 || keep_length < LMS[3]) ? 0 : keep_length - LMS[3]
+
+    console.log("%c [-----------]", 'color: #ff00ff', LMS0)
+    // console.log("%c [===========]", 'color: #ff00ff', state.cur_pt, ':', hand_length, keep_length)
+    console.log("%c [on start pt]", 'color: #ff00ff', LMS)
     return LMS
 }

@@ -55,6 +55,7 @@ export interface IZone {
 
 export interface IPlayer {
     id: string
+    idx: number
     zones: IZone[]
 }
 
@@ -95,14 +96,14 @@ function getZones(ids: string[]): IZone[] {
 
 export function getCommon(id: string): IPlayer {
     return {
-        id,
+        id, idx: -1,
         zones: getZones(config.common_zones),
     }
 }
 
-function getPlayer(id: string): IPlayer {
+function getPlayer(id: string, idx: number): IPlayer {
     return {
-        id,
+        id, idx,
         zones: getZones(config.player_zones),
     }
 }
@@ -110,7 +111,7 @@ function getPlayer(id: string): IPlayer {
 export function getPlayers(ids: string[]): IPlayer[] {
     const players: IPlayer[] = []
     let n = ids.length
-    while (n --> 0) players.unshift(getPlayer(ids[n]))
+    while (n --> 0) players.unshift(getPlayer(ids[n], n))
     return players
 }
 

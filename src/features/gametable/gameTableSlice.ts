@@ -12,6 +12,7 @@ const N = config.players.length, move_token = true
 
 let card_uid = 0
 let src_empty = false
+let deck_over = false
 
 const get_new_gt = (gt: number) => {
     let new_gt = gt + 1
@@ -118,6 +119,7 @@ const gameTableSlice = createSlice({
             state.cur_gt = -1
             state.sel_card = null
             state.ph_lim = []
+            deck_over = false
         },
 
         next(state) {
@@ -209,7 +211,10 @@ const gameTableSlice = createSlice({
                         const tmp = state.common.zones[CommonZone.drop].cards.splice(0, drop.length)
                         state.common.zones[CommonZone.deck].cards = tmp
                     }
-                    else log_m('-- game over')
+                    else {
+                        log_m('! deck over')
+                        deck_over = true
+                    }
                 }
 
                 if (card) {
@@ -220,6 +225,10 @@ const gameTableSlice = createSlice({
 
                     if (is_phase(state, 'draw')) state.next_cnt += 1
                 }
+            }
+            else {
+                log_m('-- deck over')
+                state.next_cnt += 1
             }
         },
 
