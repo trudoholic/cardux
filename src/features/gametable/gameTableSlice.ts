@@ -5,7 +5,7 @@ import cards, {CardType} from "./cards"
 import config, {CommonZone, PlayerZone} from "./config"
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
 import {ICard, IState, IZone, initialState, getDeckCard} from "./utils"
-import {get_deck, get_drop, get_hand, get_keep, get_limits, get_rule, get_src, is_src_empty} from "./Zones"
+import {get_deck, get_drop, get_goal, get_hand, get_keep, get_limits, get_rule, get_src, is_src_empty} from "./Zones"
 
 const N = config.players.length, move_token = true
 // const n_cards = 12
@@ -241,7 +241,6 @@ const gameTableSlice = createSlice({
                     hand.splice(idx, 1)
 
                     if (CardType.Rule === card.type) {
-
                         const drop = get_rule(state).filter(it => it.subtype === card.subtype)
                         drop.forEach(it => {
                             it.zone_id = 'drop'
@@ -251,6 +250,14 @@ const gameTableSlice = createSlice({
 
                         get_rule(state).push(card)
                         state.cards[card.id].zone_id = 'rule'
+                    }
+                    else if (CardType.Goal === card.type) {
+                        const drop = get_goal(state).splice(0)
+                        drop.forEach(it => {
+                            it.zone_id = 'drop'
+                            get_drop(state).push(it)
+                        })
+                        get_goal(state).push(card)
                     }
                     else {
                         get_keep(state).push(card)

@@ -1,8 +1,9 @@
 export enum CommonZone {
     rule,
+    goal,
     play,
-    deck,
     drop,
+    deck,
 }
 
 export enum PlayerZone {
