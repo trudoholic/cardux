@@ -9,6 +9,7 @@ export enum CommonZone {
 export enum PlayerZone {
     hand,
     keep,
+    crib,
 }
 
 export const enumToArray = (e:object) => Object.keys(e).filter(k => isNaN(+k))

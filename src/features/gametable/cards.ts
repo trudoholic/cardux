@@ -1,5 +1,6 @@
 export enum CardType {
     Act = 1,
+    Bane,
     Goal,
     Keep,
     Rule,
@@ -62,6 +63,12 @@ const raw_cards: IRawCard[] = [
     { type: CardType.Goal, value: 7, },
     { type: CardType.Goal, value: 8, },
     { type: CardType.Goal, value: 9, },
+
+    { type: CardType.Act, value: 1, },
+    { type: CardType.Act, value: 2, },
+    { type: CardType.Act, value: 3, },
+
+    { type: CardType.Bane, value: 1, },
 ]
 
 const cards = raw_cards.map((it, i) => ({ id: '' + i, ...it}))

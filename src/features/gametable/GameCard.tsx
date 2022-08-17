@@ -1,7 +1,7 @@
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 import Button from "@mui/material/Button"
 import React from "react"
-import {blue, green, red, yellow} from "@mui/material/colors"
+import {blue, green, grey, red, yellow} from "@mui/material/colors"
 import {ICard} from "./utils";
 
 const theme = createTheme({
@@ -9,7 +9,7 @@ const theme = createTheme({
         error: red,
         info: blue,
         success: green,
-        warning: yellow,
+        warning: grey,
     }
 })
 
@@ -18,6 +18,8 @@ interface GameCardProps {
     onClick: () => void
 }
 
+const colors = ["error", "error", "warning", "success", "primary", "secondary"] as const
+
 export default function GameCard(props: GameCardProps) {
     const card = props.card
     return (
@@ -25,10 +27,7 @@ export default function GameCard(props: GameCardProps) {
             <Button
                 sx={{ m: 1/4 }}
                 variant="outlined"
-                color={card.type === 1 ? "error"
-                    : card.type === 2 ? "success"
-                        : card.type === 3 ? "primary"
-                            : "secondary"}
+                color={colors[card.type]}
                 onClick={props.onClick}
             >
                 {card.description}
