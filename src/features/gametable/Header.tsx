@@ -5,8 +5,8 @@ import Button from "@mui/material/Button"
 
 import {gameStyles} from "./gameStyles"
 import {gameState, add, draw, play, remove, zone_lim} from "./gameTableSlice"
-import config from "./config";
-import {get_deck} from "./Zones";
+import config, {CommonZone} from "./config";
+import {get_c_z} from "./Zones";
 
 function Header() {
 
@@ -45,7 +45,7 @@ function Header() {
                     !state.game_on
                     || !is_phase('draw')
                     // || !state.common.zones[1].cards.length
-                    || !get_deck(state).length
+                    || !get_c_z(state, CommonZone.deck).length
                 }
                 variant="contained"
                 color="success"

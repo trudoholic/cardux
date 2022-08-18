@@ -5,7 +5,13 @@ import cards, {CardType} from "./cards"
 import config, {CommonZone, PlayerZone} from "./config"
 import {log_m, bra_gt, ket_gt, bra_pt, ket_pt, bra_ph, ket_ph} from "./Logger"
 import {ICard, IState, IZone, initialState, getDeckCard} from "./utils"
-import {get_crib, get_deck, get_drop, get_goal, get_hand, get_keep, get_limits, get_rule, get_src, is_src_empty} from "./Zones"
+import {
+    get_c_z,
+    get_p_z,
+    get_limits,
+    get_src,
+    is_src_empty
+} from "./Zones"
 
 const N = config.players.length, move_token = true
 // const n_cards = 12
@@ -69,7 +75,7 @@ const gameTableSlice = createSlice({
 
         remove(state, action: PayloadAction<string>) {
             if (!state.game_on) return
-            const cards = get_hand(state)
+            const cards = get_p_z(state, PlayerZone.hand)
             if (cards.length) {
                 const card = cards.pop() as {id: string}
                 state.sel_card = cards[cards.length - 1]
@@ -200,15 +206,16 @@ const gameTableSlice = createSlice({
         },
 
         draw(state, action: PayloadAction<string>) {
-            const deck = get_deck(state)
+            const deck = get_c_z(state, CommonZone.deck)
             if (deck.length) {
                 const card = deck.shift()
 
                 if (!deck.length) {
-                    const drop = get_drop(state)
+                    const drop = get_c_z(state, CommonZone.drop)
                     if (drop.length) {
                         log_m('-- shuffle')
                         const tmp = state.common.zones[CommonZone.drop].cards.splice(0, drop.length)
+                        // TODO: shuffle
                         state.common.zones[CommonZone.deck].cards = tmp
                     }
                     else {
@@ -220,13 +227,13 @@ const gameTableSlice = createSlice({
                 if (card) {
                     if (CardType.Bane === card.type) {
                     // if (CardType.Keep !== card.type) {
-                        const crib = get_crib(state)
+                        const crib = get_p_z(state, PlayerZone.crib)
                         crib.push(card)
                         state.cards[card.id].player_id = 'p' + state.cur_pt
                         state.cards[card.id].zone_id = 'crib'
                     }
                     else {
-                        const hand = get_hand(state)
+                        const hand = get_p_z(state, PlayerZone.hand)
                         hand.push(card)
                         state.cards[card.id].player_id = 'p' + state.cur_pt
                         state.cards[card.id].zone_id = 'hand'
@@ -244,32 +251,32 @@ const gameTableSlice = createSlice({
         play(state, action: PayloadAction<string>) {
             const card = state.sel_card
             if (card && 'hand' === card.zone_id) {
-                let hand = get_hand(state)
+                let hand = get_p_z(state, PlayerZone.hand)
                 const idx = hand.findIndex(c => c.id === card.id)
                 if (idx >= 0) {
                     hand.splice(idx, 1)
 
                     if (CardType.Rule === card.type) {
-                        const drop = get_rule(state).filter(it => it.subtype === card.subtype)
+                        const drop = get_c_z(state, CommonZone.rule).filter(it => it.subtype === card.subtype)
                         drop.forEach(it => {
                             it.zone_id = 'drop'
-                            get_drop(state).push(it)
+                            get_c_z(state, CommonZone.drop).push(it)
                         })
-                        state.common.zones[CommonZone.rule].cards = get_rule(state).filter(it => it.subtype !== card.subtype)
+                        state.common.zones[CommonZone.rule].cards = get_c_z(state, CommonZone.rule).filter(it => it.subtype !== card.subtype)
 
-                        get_rule(state).push(card)
+                        get_c_z(state, CommonZone.rule).push(card)
                         state.cards[card.id].zone_id = 'rule'
                     }
                     else if (CardType.Goal === card.type) {
-                        const drop = get_goal(state).splice(0)
+                        const drop = get_c_z(state, CommonZone.goal).splice(0)
                         drop.forEach(it => {
                             it.zone_id = 'drop'
-                            get_drop(state).push(it)
+                            get_c_z(state, CommonZone.drop).push(it)
                         })
-                        get_goal(state).push(card)
+                        get_c_z(state, CommonZone.goal).push(card)
                     }
                     else {
-                        get_keep(state).push(card)
+                        get_p_z(state, PlayerZone.keep).push(card)
                         state.cards[card.id].zone_id = 'keep'
                     }
 
@@ -289,7 +296,7 @@ const gameTableSlice = createSlice({
                 const idx = src.findIndex(c => c.id === card.id)
                 if (idx >= 0) {
                     src.splice(idx, 1)
-                    const dst = get_drop(state)
+                    const dst = get_c_z(state, CommonZone.drop)
                     dst.push(card)
                     state.cards[card.id].zone_id = 'drop'
                     state.sel_card_valid = false
