@@ -208,7 +208,17 @@ const gameTableSlice = createSlice({
         draw(state, action: PayloadAction<string>) {
             const deck = get_c_z(state, CommonZone.deck)
             if (deck.length) {
-                const card = deck.shift()
+                let card: ICard | undefined
+                if (state.sel_card && 'deck' === state.sel_card.zone_id) {
+                    card = state.sel_card
+                    const idx = deck.findIndex(c => c.id === card!.id)
+                    if (idx >= 0) {
+                        deck.splice(idx, 1)
+                    }
+                }
+                else {
+                    card = deck.shift()
+                }
 
                 if (!deck.length) {
                     const drop = get_c_z(state, CommonZone.drop)
