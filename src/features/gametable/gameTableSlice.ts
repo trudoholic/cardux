@@ -68,6 +68,7 @@ const gameTableSlice = createSlice({
             /*/
             if (!state.game_on) return
             const card = createCardInZone(state, state.pp[state.cur_pt].zones[PlayerZone.hand], ++card_uid)
+            card.player_idx = state.cur_pt
             state.sel_card = card
             console.log("%c [+]", 'color: #d33682', card.id)
             //
@@ -90,7 +91,8 @@ const gameTableSlice = createSlice({
             const id = action.payload
             state.sel_card = state.cards[id] ?? null
             state.sel_card_valid = state.sel_card
-                && state.sel_card.player_id === 'p' + state.cur_pt
+                // && state.sel_card.player_id === 'p' + state.cur_pt
+                && state.sel_card.player_idx === state.cur_pt
                 && state.sel_card.zone_id === config.phase_zone[state.cur_ph]
             // console.log("%c [card]", 'color: #d33682', id, state.sel_card?.player_id, state.sel_card?.zone_id)
         },
@@ -235,18 +237,21 @@ const gameTableSlice = createSlice({
                 }
 
                 if (card) {
+                    const c = state.cards[card.id]
                     if (CardType.Bane === card.type) {
                     // if (CardType.Keep !== card.type) {
                         const crib = get_p_z(state, PlayerZone.crib)
                         crib.push(card)
-                        state.cards[card.id].player_id = 'p' + state.cur_pt
-                        state.cards[card.id].zone_id = 'crib'
+                        // state.cards[card.id].player_id = 'p' + state.cur_pt
+                        c.player_idx = state.cur_pt
+                        c.zone_id = 'crib'
                     }
                     else {
                         const hand = get_p_z(state, PlayerZone.hand)
                         hand.push(card)
-                        state.cards[card.id].player_id = 'p' + state.cur_pt
-                        state.cards[card.id].zone_id = 'hand'
+                        // state.cards[card.id].player_id = 'p' + state.cur_pt
+                        c.player_idx = state.cur_pt
+                        c.zone_id = 'hand'
 
                         if (is_phase(state, 'draw')) state.next_cnt += 1
                     }

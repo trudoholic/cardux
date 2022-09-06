@@ -4,7 +4,8 @@ import config from "./config"
 type DeckCard = typeof cards[number]
 export interface ICard extends DeckCard { //IDeckCard
     description: string
-    player_id: string
+    // player_id: string
+    player_idx: number
     zone_id: string
 }
 
@@ -75,7 +76,8 @@ export function getDeckCard(id: number): ICard { //(deck_card: DeckCard): IDeckC
         ...deck_card,
         // description: 'Card: ' + deck_card.id,
         description: getDescription(id),
-        player_id: '',
+        // player_id: '',
+        player_idx: -1,
         zone_id: ''
     }
 }

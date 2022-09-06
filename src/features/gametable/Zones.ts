@@ -36,8 +36,8 @@ export function get_limits(state: IState): number[] {
     const keep_length = get_p_z(state, PlayerZone.keep).length
     LMS[3] = (LMS[3] < 0 || keep_length < LMS[3]) ? 0 : keep_length - LMS[3]
 
-    console.log("%c [-----------]", 'color: #ff00ff', LMS0)
-    console.log("%c [===========]", 'color: #ff00ff', state.cur_pt, ':', hand_length, keep_length)
-    console.log("%c [on start pt]", 'color: #ff00ff', LMS)
+    // console.log("%c [-----------]", 'color: #ff00ff', LMS0)
+    // console.log("%c [===========]", 'color: #ff00ff', state.cur_pt, ':', hand_length, keep_length)
+    // console.log("%c [on start pt]", 'color: #ff00ff', LMS)
     return LMS
 }

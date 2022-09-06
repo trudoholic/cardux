@@ -13,7 +13,7 @@ export enum RuleType {
     Play,
 }
 
-export function typeToStr(t: CardType) { return CardType[t] }
+// export function typeToStr(t: CardType) { return CardType[t] }
 export function getDescription(id: number) {
     const card = raw_cards[id]
     let d = CardType[card.type]
