@@ -10,6 +10,12 @@ export function get_p_z(state: IState, zone: PlayerZone): ICard[] {
     return state.pp[state.cur_pt].zones[zone].cards
 }
 
+export function card_zone(state: IState, card: ICard): ICard[] {
+    return card.player_idx < 0 ?
+        state.common.zones[CommonZone[card.zone_id as keyof typeof CommonZone]].cards :
+        state.pp[card.player_idx].zones[PlayerZone[card.zone_id as keyof typeof PlayerZone]].cards
+}
+
 export function get_src(state: IState): ICard[] {
     const idx = config.player_zones.findIndex(it => it === config.phase_zone[state.cur_ph])
     if (idx >= 0) {
