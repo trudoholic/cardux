@@ -226,10 +226,14 @@ const gameTableSlice = createSlice({
                 if (!deck.length) {
                     const drop = get_c_z(state, CommonZone.drop)
                     if (drop.length) {
-                        log_m('-- shuffle')
+                        log_m('-- shuffle --')
                         const tmp = state.common.zones[CommonZone.drop].cards.splice(0, drop.length)
-                        // TODO: shuffle
-                        state.common.zones[CommonZone.deck].cards = tmp
+                        // state.common.zones[CommonZone.deck].cards = tmp // no shuffle
+                        while (tmp.length) {
+                            state.common.zones[CommonZone.deck].cards
+                                .push(tmp.splice(Math.floor(Math.random() * tmp.length), 1)[0])
+                        }
+
                     }
                     else {
                         log_m('! deck over')
