@@ -264,6 +264,8 @@ const gameTableSlice = createSlice({
                 log_m('-- deck over')
                 state.next_cnt += 1
             }
+
+            state.sel_card = null
         },
 
         play(state, action: PayloadAction<string>) {
