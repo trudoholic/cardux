@@ -6,8 +6,8 @@ export function get_c_z(state: IState, zone: CommonZone): ICard[] {
     return state.common.zones[zone].cards
 }
 
-export function get_p_z(state: IState, zone: PlayerZone): ICard[] {
-    return state.pp[state.cur_pt].zones[zone].cards
+export function get_p_z(state: IState, zone: PlayerZone, idx?: number): ICard[] {
+    return state.pp[idx ?? state.cur_pt].zones[zone].cards
 }
 
 export function card_zone(state: IState, card: ICard): ICard[] {

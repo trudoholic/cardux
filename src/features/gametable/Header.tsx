@@ -20,7 +20,7 @@ function Header() {
 
     return (
         <div className={classes.header}>
-            <Button
+            <Button disabled
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -30,7 +30,7 @@ function Header() {
                 ADD
             </Button>
 
-            <Button
+            <Button disabled
                 variant="contained"
                 color="primary"
                 onClick={() => {

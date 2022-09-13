@@ -50,6 +50,27 @@ function selectCard(state: IState) {
 
 function is_phase(state: IState, phase_id: string) { return phase_id === config.phases[state.cur_ph] }
 
+function check_victory_conditions(state: IState) {
+    const result = state.pp.map(() => false)
+    const goals = get_c_z(state, CommonZone.goal)
+    // log_m(`[goals]: ${goals.length}`)
+    goals.forEach((goal) => {
+        log_m(`=====> goal: ${goal.value}`)
+        state.pp.forEach(p => {
+            const keep = get_p_z(state, PlayerZone.keep, p.idx)
+            const value = keep.reduce((sum: number, card) => sum + card.value, 0)
+            log_m(`---> [${p.idx}] sum: ${value} ${value === goal.value}`)
+            if (value === goal.value) { result[p.idx] = true }
+        })
+    })
+    log_m(`[result]: ${result}`)
+    if (1 === result.reduce((sum: number, it) => sum + (it?1:0), 0)) {
+        log_m(`!!! ${result.findIndex(it => it)}`)
+        return result.findIndex(it => it);
+    }
+    return -1;
+}
+
 const gameTableSlice = createSlice({
     name: "gameTable",
     initialState,
@@ -310,11 +331,14 @@ const gameTableSlice = createSlice({
                             get_c_z(state, CommonZone.drop).push(it)
                         })
                         get_c_z(state, CommonZone.goal).push(card)
+                        state.cards[card.id].zone_id = CommonZone[CommonZone.goal]
+                        check_victory_conditions(state)
                     }
 
                     else {
                         get_p_z(state, PlayerZone.keep).push(card)
                         state.cards[card.id].zone_id = PlayerZone[PlayerZone.keep]
+                        check_victory_conditions(state)
                     }
 
                     state.sel_card_valid = false
