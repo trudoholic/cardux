@@ -58,9 +58,12 @@ function check_victory_conditions(state: IState) {
         log_m(`=====> goal: ${goal.value}`)
         state.pp.forEach(p => {
             const keep = get_p_z(state, PlayerZone.keep, p.idx)
+            const crib = get_p_z(state, PlayerZone.crib, p.idx)
             const value = keep.reduce((sum: number, card) => sum + card.value, 0)
-            log_m(`---> [${p.idx}] sum: ${value} ${value === goal.value}`)
-            if (value === goal.value) { result[p.idx] = true }
+            log_m(`---> [${p.idx}] sum: ${value} ${value % 10 === goal.value} ${crib.length?'#':''}`)
+            if (value === goal.value
+                && !crib.length
+            ) { result[p.idx] = true }
         })
     })
     log_m(`[result]: ${result}`)
